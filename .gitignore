@@ -1,0 +1,14 @@
+
+*.obj
+*.log
+*.txt
+*.tlog
+*.pch
+*.dll
+*.exe
+*.idb
+*.lib
+*.map
+*.exp
+*.ilk
+*.pdb
