@@ -8,6 +8,7 @@ namespace dae
 	class Time final : public Singleton<Time>
 	{
 	public:
+		void Create();
 		//!!DO NOT CALL THIS FUNCTION!!
 		void Update();
 		int GetFPS() const;

@@ -5,6 +5,11 @@
 using namespace std;
 using namespace chrono;
 
+void dae::Time::Create()
+{
+	m_LastTime = std::chrono::high_resolution_clock::now();
+}
+
 void dae::Time::Update()
 {
 	const auto currentTime = std::chrono::high_resolution_clock::now(); 

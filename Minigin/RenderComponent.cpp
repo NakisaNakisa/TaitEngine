@@ -43,7 +43,7 @@ void dae::RenderComponent::Update()
 	}
 }
 
-void dae::RenderComponent::SetText(std::string text, SDL_Color color)
+void dae::RenderComponent::SetText(const std::string& text, SDL_Color color)
 {
 	if (m_Text != text|| (color.r != m_FontColor.r || color.g != m_FontColor.g || color.b != m_FontColor.b || color.a != m_FontColor.a))
 	{
@@ -56,7 +56,7 @@ void dae::RenderComponent::SetText(std::string text, SDL_Color color)
 }
 
 
-void dae::RenderComponent::SetTexture(std::string dataPath)
+void dae::RenderComponent::SetTexture(const std::string& dataPath)
 {
 	if (m_Texture)
 		m_Texture.reset();
@@ -64,6 +64,8 @@ void dae::RenderComponent::SetTexture(std::string dataPath)
 }
 
 dae::RenderComponent::RenderComponent(GameObject& go)
-	:Component(go)
+	: Component(go)
+	, m_FontColor{ 1,1,1,1 }
+	, m_NeedsUpdate{ false }
 {
 }

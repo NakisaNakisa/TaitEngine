@@ -12,8 +12,8 @@ namespace dae
 		void Render() const override;
 		void Update() override;
 
-		void SetText(std::string text, SDL_Color color = SDL_Color{ 255,255,0,255 });
-		void SetTexture(std::string dataPath);
+		void SetText(const std::string& text, SDL_Color color = SDL_Color{ 255,255,0,255 });
+		void SetTexture(const std::string& dataPath);
 
 		explicit RenderComponent(GameObject& go);
 		virtual ~RenderComponent() = default;
