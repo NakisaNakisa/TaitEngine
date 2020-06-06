@@ -1,6 +1,7 @@
 #include "MiniginPCH.h"
 #include "Scene.h"
 #include "GameObject.h"
+#include <algorithm>
 
 using namespace dae;
 
@@ -13,6 +14,11 @@ Scene::~Scene() = default;
 void Scene::Add(const std::shared_ptr<SceneObject>& object)
 {
 	m_Objects.push_back(object);
+	auto objSort = [](const SceneObject& obj1, const SceneObject& obj2) 
+	{
+		return obj1.GetLayerId() < obj2.GetLayerId();
+	};
+	std::sort(m_Objects.begin(), m_Objects.end(), objSort);
 }
 
 void dae::Scene::PreUpdate()

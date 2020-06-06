@@ -26,6 +26,8 @@ namespace dae
 		void SetPosition(float x, float y);
 		Transform& GetTransform();
 
+		int GetLayer() const { return m_LayerId; }
+
 		GameObject() = default;
 		virtual ~GameObject();
 		GameObject(const GameObject& other) = delete;
@@ -35,7 +37,6 @@ namespace dae
 
 	private:
 		Transform m_Transform;
-		//std::shared_ptr<Texture2D> m_Texture{};
 		std::vector<Component*> m_Components;
 
 		void RemoveComponentHelper(size_t id);
