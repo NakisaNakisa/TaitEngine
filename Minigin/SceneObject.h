@@ -9,6 +9,7 @@ namespace dae
 		virtual void PostUpdate() = 0;
 		virtual void Render() const = 0;
 
+		void SetLayerId(int id) { m_LayerId = id; }
 		int GetLayerId() const { return m_LayerId; }
 
 		SceneObject() = default;

@@ -75,6 +75,9 @@
     <ClInclude Include="TaitEngine.h">
       <Filter>Engine Files</Filter>
     </ClInclude>
+    <ClInclude Include="CameraComponent.h">
+      <Filter>Component Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Font.cpp">
@@ -124,6 +127,9 @@
     </ClCompile>
     <ClCompile Include="TaitEngine.cpp">
       <Filter>Engine Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraComponent.cpp">
+      <Filter>Component Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

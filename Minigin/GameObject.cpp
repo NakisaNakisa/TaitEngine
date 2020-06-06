@@ -24,27 +24,29 @@ inline void dae::GameObject::RemoveComponentHelper(size_t id)
 void dae::GameObject::PreUpdate()
 {
 	for (Component* c : m_Components)
-		c->PreUpdate();
+		if (c->IsActive())
+			c->PreUpdate();
 }
 
 void dae::GameObject::Update()
 {
 	for (Component* c : m_Components)
-		c->Update();
+		if (c->IsActive())
+			c->Update();
 }
 
 void dae::GameObject::PostUpdate()
 {
 	for (Component* c : m_Components)
-		c->PostUpdate();
+		if (c->IsActive())
+			c->PostUpdate();
 }
 
 void dae::GameObject::Render() const
 {
 	for (Component* c : m_Components)
-		c->Render();
-	//const auto pos = m_Transform.GetPosition();
-	//Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
+		if (c->IsActive())
+			c->Render();
 }
 
 
@@ -60,15 +62,10 @@ void dae::GameObject::RemoveComponent(Component* toRemove)
 		}
 	}
 }
-//
-//void dae::GameObject::SetTexture(const std::string& filename)
-//{
-//	m_Texture = ResourceManager::GetInstance().LoadTexture(filename);
-//}
 
 void dae::GameObject::SetPosition(float x, float y)
 {
-	m_Transform.SetPosition(x, y, 0.0f);
+	m_Transform.SetPosition(x, y);
 }
 
 dae::Transform& dae::GameObject::GetTransform()

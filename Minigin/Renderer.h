@@ -36,6 +36,9 @@ namespace dae
 		SDL_Renderer* GetSDLRenderer() const { return m_Renderer; }
 	private:
 		SDL_Renderer* m_Renderer{};
+
+		Vector3 CalculateCorrectPoint(float x, float y) const;
+		Vector CalculateCorrectScale(float x, float y) const;
 	};
 }
 

@@ -40,3 +40,20 @@ dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 	m_Scenes.push_back(scene);
 	return *scene;
 }
+
+void dae::SceneManager::SetActiveScene(const std::string& name)
+{
+	for (std::shared_ptr<Scene>& scene : m_Scenes)
+	{
+		if (scene->GetName() == name)
+		{
+			m_ActiveScene = scene;
+			return;
+		}
+	}
+}
+
+void dae::SceneManager::SetActiveScene(int id)
+{
+	m_ActiveScene = m_Scenes[id];
+}

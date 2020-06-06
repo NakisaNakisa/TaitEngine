@@ -11,41 +11,56 @@ Scene::Scene(const std::string& name) : m_Name(name) {}
 
 Scene::~Scene() = default;
 
-void Scene::Add(const std::shared_ptr<SceneObject>& object)
+void Scene::Add(const std::shared_ptr<GameObject>& object)
 {
 	m_Objects.push_back(object);
-	auto objSort = [](const SceneObject& obj1, const SceneObject& obj2) 
+	auto objSort = [](const std::shared_ptr<GameObject>& obj1, const std::shared_ptr<GameObject>& obj2)
 	{
-		return obj1.GetLayerId() < obj2.GetLayerId();
+		return obj1->GetLayerId() < obj2->GetLayerId();
 	};
 	std::sort(m_Objects.begin(), m_Objects.end(), objSort);
+}
+
+void dae::Scene::FindCamera()
+{
+	for (auto& object : m_Objects)
+	{
+		CameraComponent* c = object->GetComponent<CameraComponent>();
+		if (c != nullptr)
+			m_ActiveCamera = c;
+	}
+}
+
+void dae::Scene::SetActiveCamera(CameraComponent* activeCam)
+{
+	m_ActiveCamera = activeCam;
 }
 
 void dae::Scene::PreUpdate()
 {
 	for (auto& object : m_Objects)
-		object->PreUpdate();
+		if(object->IsActive())
+			object->PreUpdate();
 }
 
 void Scene::Update()
 {
 	for(auto& object : m_Objects)
-	{
-		object->Update();
-	}
+		if (object->IsActive())
+			object->Update();
 }
 
 void dae::Scene::PostUpdate()
 {
 	for (auto& object : m_Objects)
-		object->PostUpdate();
+		if (object->IsActive())
+			object->PostUpdate();
 }
 
 void Scene::Render() const
 {
 	for (const auto& object : m_Objects)
-	{
-		object->Render();
-	}
+		if (object->IsActive())
+			object->Render();
 }
 

@@ -3,21 +3,24 @@
 #include "SceneObject.h"
 #include "Component.h"
 #include "RenderComponent.h"
+#include "CameraComponent.h"
 
 namespace dae
 {
 	class Texture2D;
-	class GameObject final : public SceneObject
+	class GameObject final// : public SceneObject
 	{
 	public:
 
-		void PreUpdate() override;
-		void Update() override;
-		void PostUpdate() override;
-		void Render() const override;
+		void PreUpdate();
+		void Update();
+		void PostUpdate();
+		void Render() const;
 
 		template <typename T>
 		inline T* AddComponent();
+		template <typename T>
+		inline T* GetComponent();
 		template <typename T>
 		void RemoveComponent();
 		void RemoveComponent(Component* toRemove);
@@ -26,7 +29,11 @@ namespace dae
 		void SetPosition(float x, float y);
 		Transform& GetTransform();
 
-		int GetLayer() const { return m_LayerId; }
+		void SetLayerId(int id) { m_LayerId = id; }
+		int GetLayerId() const { return m_LayerId; }
+
+		void SetActiveStatus(bool isActive) { m_IsActive = isActive; }
+		bool IsActive() const { return m_IsActive; }
 
 		GameObject() = default;
 		virtual ~GameObject();
@@ -40,6 +47,8 @@ namespace dae
 		std::vector<Component*> m_Components;
 
 		void RemoveComponentHelper(size_t id);
+		bool m_IsActive{ true };
+		int m_LayerId{};
 	};
 }
 
@@ -51,6 +60,17 @@ inline T* dae::GameObject::AddComponent()
 		T* newT = new T(*this);
 		m_Components.push_back(newT);
 		return newT;
+	}
+	return nullptr;
+}
+
+template<typename T>
+inline T* dae::GameObject::GetComponent()
+{
+	for (Component* c : m_Components)
+	{
+		if(T* t = dynamic_cast<T*>(c))
+			return t;
 	}
 	return nullptr;
 }

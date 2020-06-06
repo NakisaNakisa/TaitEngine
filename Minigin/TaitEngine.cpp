@@ -12,6 +12,7 @@
 #include "Scene.h"
 #include "Time.h"
 #include "SpriteRenderComponent.h"
+#include "CameraComponent.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -58,8 +59,10 @@ void dae::TaitEngine::Initialize()
 void dae::TaitEngine::LoadGame()
 {
 	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
+	SceneManager::GetInstance().SetActiveScene("Demo");
 
 	auto go = std::make_shared<GameObject>();
+	go->SetLayerId((int)RenderLayers::Background_0);
 	RenderComponent* rc = go->AddComponent<RenderComponent>();
 	rc->SetTexture("background.jpg");
 	scene.Add(go);
@@ -78,6 +81,11 @@ void dae::TaitEngine::LoadGame()
 	src->SetAmount(8);
 	src->SetStartFrame(0);
 	scene.Add(go);
+
+	go = std::make_shared<GameObject>();
+	go->AddComponent<CameraComponent>();
+	scene.Add(go);
+	scene.FindCamera();
 
 
 	go = std::make_shared<GameObject>();
@@ -137,4 +145,9 @@ void dae::TaitEngine::MiniUpdate()
 {
 	int fps = Time::GetInstance().GetFPS();
 	m_pFPSRC->SetText(std::to_string(fps).c_str());
+
+	CameraComponent* cam = SceneManager::GetInstance().GetActiveScene().GetCamera();
+	float dt = Time::GetInstance().GetDeltaTime();
+	Vector delta = { dt * 10, dt * 10 };
+	cam->GetGameObject().GetTransform().SetPosition(cam->GetGameObject().GetTransform().GetPosition() + delta);
 }
