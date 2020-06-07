@@ -1,27 +1,31 @@
 #pragma once
-namespace dae
+namespace tait
 {
 	class Transform final
 	{
 	public:
-		TRSMatrix GetTRSMatrix() const { return m_TRS; }
-		void CalculateTRS();
+		const Vector& GetPosition() const { return m_Position; }
+		const Vector& GetCenter() const { return m_Center; }
+		const Vector& GetSize() const { return m_Size; }
+		const Vector& GetHalfSize() const { return m_HalfSize; }
+		const Rect& GetRect() const { return m_Rect; }
 
-		const Vector GetPosition() const { return m_Position; }
+
 		void SetPosition(float x, float y);
 		void SetPosition(const Vector& p);
+		void SetCenterPosition(float x, float y);
+		void SetCenterPosition(const Vector& p);
+		void SetSize(float w, float h);
+		void SetSize(const Vector& s);
+		void SetHalfSize(float w, float h);
+		void SetHalfSize(const Vector& s);
 
-		const float GetRotation() const { return m_Rotation; }
-		void SetRotation(float angle, bool isDegree = true);
-
-		const Vector GetScale() const { return m_Scale; }
-		void SetScale(float x, float y);
-		void SetScale(const Vector& s);
 
 	private:
-		TRSMatrix m_TRS{};
+		Rect m_Rect{};
 		Vector m_Position{};
-		float m_Rotation{};
-		Vector m_Scale{ 1,1 };
+		Vector m_Center{};
+		Vector m_Size{};
+		Vector m_HalfSize{};
 	};
 }

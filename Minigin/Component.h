@@ -1,6 +1,6 @@
 #pragma once
 
-namespace dae
+namespace tait
 {
 	class GameObject;
 	class Component

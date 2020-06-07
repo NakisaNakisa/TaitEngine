@@ -3,14 +3,14 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 
-dae::GameObject::~GameObject()
+tait::GameObject::~GameObject()
 {
 	for (Component* c : m_Components)
 		delete c;
 	m_Components.clear();
 }
 
-inline void dae::GameObject::RemoveComponentHelper(size_t id)
+inline void tait::GameObject::RemoveComponentHelper(size_t id)
 {
 	size_t size = m_Components.size();
 	if (id < size - 1)
@@ -21,28 +21,28 @@ inline void dae::GameObject::RemoveComponentHelper(size_t id)
 	m_Components.pop_back();
 }
 
-void dae::GameObject::PreUpdate()
+void tait::GameObject::PreUpdate()
 {
 	for (Component* c : m_Components)
 		if (c->IsActive())
 			c->PreUpdate();
 }
 
-void dae::GameObject::Update()
+void tait::GameObject::Update()
 {
 	for (Component* c : m_Components)
 		if (c->IsActive())
 			c->Update();
 }
 
-void dae::GameObject::PostUpdate()
+void tait::GameObject::PostUpdate()
 {
 	for (Component* c : m_Components)
 		if (c->IsActive())
 			c->PostUpdate();
 }
 
-void dae::GameObject::Render() const
+void tait::GameObject::Render() const
 {
 	for (Component* c : m_Components)
 		if (c->IsActive())
@@ -50,7 +50,7 @@ void dae::GameObject::Render() const
 }
 
 
-void dae::GameObject::RemoveComponent(Component* toRemove)
+void tait::GameObject::RemoveComponent(Component* toRemove)
 {
 	size_t size = m_Components.size();
 	for (size_t i = 0; i < size; i++)
@@ -63,12 +63,12 @@ void dae::GameObject::RemoveComponent(Component* toRemove)
 	}
 }
 
-void dae::GameObject::SetPosition(float x, float y)
+void tait::GameObject::SetPosition(float x, float y)
 {
 	m_Transform.SetPosition(x, y);
 }
 
-dae::Transform& dae::GameObject::GetTransform()
+tait::Transform& tait::GameObject::GetTransform()
 {
 	return m_Transform;
 }

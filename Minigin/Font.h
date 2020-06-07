@@ -1,7 +1,7 @@
 #pragma once
 
 struct _TTF_Font;
-namespace dae
+namespace tait
 {
 	/**
 	 * Simple RAII wrapper for an _TTF_Font

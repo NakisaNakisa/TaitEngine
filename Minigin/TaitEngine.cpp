@@ -17,7 +17,7 @@
 using namespace std;
 using namespace std::chrono;
 
-void dae::TaitEngine::Initialize()
+void tait::TaitEngine::Initialize()
 {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
 	{
@@ -56,7 +56,7 @@ void dae::TaitEngine::Initialize()
 /**
  * Code constructing the scene world starts here
  */
-void dae::TaitEngine::LoadGame()
+void tait::TaitEngine::LoadGame()
 {
 	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
 	SceneManager::GetInstance().SetActiveScene("Demo");
@@ -101,7 +101,7 @@ void dae::TaitEngine::LoadGame()
 	//scene.Add(to);
 }
 
-void dae::TaitEngine::Cleanup()
+void tait::TaitEngine::Cleanup()
 {
 	Renderer::GetInstance().Destroy();
 	SDL_DestroyWindow(m_Window);
@@ -109,7 +109,7 @@ void dae::TaitEngine::Cleanup()
 	SDL_Quit();
 }
 
-void dae::TaitEngine::Run()
+void tait::TaitEngine::Run()
 {
 	Initialize();
 
@@ -141,13 +141,14 @@ void dae::TaitEngine::Run()
 	Cleanup();
 }
 
-void dae::TaitEngine::MiniUpdate()
+void tait::TaitEngine::MiniUpdate()
 {
 	int fps = Time::GetInstance().GetFPS();
 	m_pFPSRC->SetText(std::to_string(fps).c_str());
 
 	CameraComponent* cam = SceneManager::GetInstance().GetActiveScene().GetCamera();
 	float dt = Time::GetInstance().GetDeltaTime();
-	Vector delta = { dt * 10, dt * 10 };
-	cam->GetGameObject().GetTransform().SetPosition(cam->GetGameObject().GetTransform().GetPosition() + delta);
+	
+	Vector moveRight = cam->GetGameObject().GetTransform().GetPosition() + Vector{ dt * 20, 0 };
+	cam->GetGameObject().GetTransform().SetPosition(moveRight);
 }

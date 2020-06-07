@@ -7,13 +7,13 @@
 #include "Time.h"
 #include "GameObject.h"
 
-void dae::SpriteRenderComponent::Render() const
+void tait::SpriteRenderComponent::Render() const
 {
 	if (m_Texture)
 		Renderer::GetInstance().RenderSprite(*m_Texture, m_DstRect, m_SrcRect);
 }
 
-void dae::SpriteRenderComponent::Update()
+void tait::SpriteRenderComponent::Update()
 {
 	m_DstRect.x = m_GameObject.GetTransform().GetPosition().x;
 	m_DstRect.y = m_GameObject.GetTransform().GetPosition().y;
@@ -29,7 +29,7 @@ void dae::SpriteRenderComponent::Update()
 	}
 }
 
-void dae::SpriteRenderComponent::SetSprite(const std::string& texturePath, int xAmount, int yAmount, float frameDuration, int amount)
+void tait::SpriteRenderComponent::SetSprite(const std::string& texturePath, int xAmount, int yAmount, float frameDuration, int amount)
 {
 	if (m_Texture)
 		m_Texture.reset();
@@ -37,26 +37,26 @@ void dae::SpriteRenderComponent::SetSprite(const std::string& texturePath, int x
 	SetSpriteValues(xAmount, yAmount, frameDuration, amount);
 }
 
-void dae::SpriteRenderComponent::SetSize(const Vector& size)
+void tait::SpriteRenderComponent::SetSize(const Vector& size)
 {
 	m_DstRect.w = size.x;
 	m_DstRect.h = size.y;
 }
 
-void dae::SpriteRenderComponent::SetStartFrame(int startFrame)
+void tait::SpriteRenderComponent::SetStartFrame(int startFrame)
 { 
 	m_StartFrame = startFrame;
 	m_CurrentFrame = m_StartFrame;
 }
 
-dae::SpriteRenderComponent::SpriteRenderComponent(GameObject& go)
+tait::SpriteRenderComponent::SpriteRenderComponent(GameObject& go)
 	: Component(go)
 	, m_SrcRect{}
 	, m_DstRect{}
 {
 }
 
-void dae::SpriteRenderComponent::SetSpriteValues(int xAmount, int yAmount, float frameDuration, int amount)
+void tait::SpriteRenderComponent::SetSpriteValues(int xAmount, int yAmount, float frameDuration, int amount)
 {
 	if (amount > -1)
 		m_Amount = amount;

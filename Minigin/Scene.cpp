@@ -3,7 +3,7 @@
 #include "GameObject.h"
 #include <algorithm>
 
-using namespace dae;
+using namespace tait;
 
 unsigned int Scene::m_IdCounter = 0;
 
@@ -21,7 +21,7 @@ void Scene::Add(const std::shared_ptr<GameObject>& object)
 	std::sort(m_Objects.begin(), m_Objects.end(), objSort);
 }
 
-void dae::Scene::FindCamera()
+void tait::Scene::FindCamera()
 {
 	for (auto& object : m_Objects)
 	{
@@ -31,12 +31,12 @@ void dae::Scene::FindCamera()
 	}
 }
 
-void dae::Scene::SetActiveCamera(CameraComponent* activeCam)
+void tait::Scene::SetActiveCamera(CameraComponent* activeCam)
 {
 	m_ActiveCamera = activeCam;
 }
 
-void dae::Scene::PreUpdate()
+void tait::Scene::PreUpdate()
 {
 	for (auto& object : m_Objects)
 		if(object->IsActive())
@@ -50,7 +50,7 @@ void Scene::Update()
 			object->Update();
 }
 
-void dae::Scene::PostUpdate()
+void tait::Scene::PostUpdate()
 {
 	for (auto& object : m_Objects)
 		if (object->IsActive())

@@ -2,7 +2,7 @@
 #include "Singleton.h"
 #include <chrono>
 
-namespace dae
+namespace tait
 {
 
 	class Time final : public Singleton<Time>

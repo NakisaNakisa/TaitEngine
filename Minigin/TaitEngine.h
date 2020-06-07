@@ -2,7 +2,7 @@
 #include "GameObject.h"
 
 struct SDL_Window;
-namespace dae
+namespace tait
 {
 	class TaitEngine
 	{

@@ -5,7 +5,7 @@
 #include "RenderComponent.h"
 #include "CameraComponent.h"
 
-namespace dae
+namespace tait
 {
 	class Texture2D;
 	class GameObject final// : public SceneObject
@@ -53,9 +53,9 @@ namespace dae
 }
 
 template <typename T>
-inline T* dae::GameObject::AddComponent()
+inline T* tait::GameObject::AddComponent()
 {
-	if (std::is_base_of<dae::Component, T>::value)
+	if (std::is_base_of<tait::Component, T>::value)
 	{
 		T* newT = new T(*this);
 		m_Components.push_back(newT);
@@ -65,7 +65,7 @@ inline T* dae::GameObject::AddComponent()
 }
 
 template<typename T>
-inline T* dae::GameObject::GetComponent()
+inline T* tait::GameObject::GetComponent()
 {
 	for (Component* c : m_Components)
 	{
@@ -76,7 +76,7 @@ inline T* dae::GameObject::GetComponent()
 }
 
 template<typename T>
-inline void dae::GameObject::RemoveComponent()
+inline void tait::GameObject::RemoveComponent()
 {
 	for (size_t i = 0; i < m_Components.size(); i++)
 	{

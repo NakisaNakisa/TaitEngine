@@ -6,7 +6,7 @@
 struct SDL_Window;
 struct SDL_Renderer;
 
-namespace dae
+namespace tait
 {
 	class Texture2D;
 
@@ -37,8 +37,7 @@ namespace dae
 	private:
 		SDL_Renderer* m_Renderer{};
 
-		Vector3 CalculateCorrectPoint(float x, float y) const;
-		Vector CalculateCorrectScale(float x, float y) const;
+		Vector GetTransformedPosition(float x, float y) const;
 	};
 }
 

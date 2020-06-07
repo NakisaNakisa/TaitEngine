@@ -2,7 +2,7 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
-void dae::SceneManager::PreUpdate()
+void tait::SceneManager::PreUpdate()
 {
 	for (auto& scene : m_Scenes)
 	{
@@ -10,7 +10,7 @@ void dae::SceneManager::PreUpdate()
 	}
 }
 
-void dae::SceneManager::Update()
+void tait::SceneManager::Update()
 {
 	for(auto& scene : m_Scenes)
 	{
@@ -18,7 +18,7 @@ void dae::SceneManager::Update()
 	}
 }
 
-void dae::SceneManager::PostUpdate()
+void tait::SceneManager::PostUpdate()
 {
 	for (auto& scene : m_Scenes)
 	{
@@ -26,7 +26,7 @@ void dae::SceneManager::PostUpdate()
 	}
 }
 
-void dae::SceneManager::Render()
+void tait::SceneManager::Render()
 {
 	for (const auto& scene : m_Scenes)
 	{
@@ -34,14 +34,14 @@ void dae::SceneManager::Render()
 	}
 }
 
-dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
+tait::Scene& tait::SceneManager::CreateScene(const std::string& name)
 {
 	const auto scene = std::shared_ptr<Scene>(new Scene(name));
 	m_Scenes.push_back(scene);
 	return *scene;
 }
 
-void dae::SceneManager::SetActiveScene(const std::string& name)
+void tait::SceneManager::SetActiveScene(const std::string& name)
 {
 	for (std::shared_ptr<Scene>& scene : m_Scenes)
 	{
@@ -53,7 +53,7 @@ void dae::SceneManager::SetActiveScene(const std::string& name)
 	}
 }
 
-void dae::SceneManager::SetActiveScene(int id)
+void tait::SceneManager::SetActiveScene(int id)
 {
 	m_ActiveScene = m_Scenes[id];
 }

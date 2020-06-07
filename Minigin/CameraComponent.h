@@ -2,7 +2,7 @@
 #include "Component.h"
 #include "SDL.h"
 
-namespace dae
+namespace tait
 {
 	class CameraComponent final : public Component
 	{

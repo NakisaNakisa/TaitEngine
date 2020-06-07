@@ -1,7 +1,7 @@
 #pragma once
 #include <math.h>
 
-namespace dae
+namespace tait
 {
 	const float PI{ 3.141592653589793238462643383279502884197169399375105820974944592307816406286f };
 
@@ -50,9 +50,40 @@ namespace dae
 		return angleInDeg * PI / 180;
 	}
 
-	inline float RadToDef(float angleInRad)
+	inline float RadToDeg(float angleInRad)
 	{
 		return angleInRad * 180 / PI;
+	}
+
+	inline Vector operator/(Vector v, float s)
+	{
+		if (s > FLT_EPSILON || s < -FLT_EPSILON)
+		{
+			v.x /= s;
+			v.y /= s;
+		}
+		return v;
+	}
+
+	inline Vector operator*(Vector v, float s)
+	{
+		v.x *= s;
+		v.y *= s;
+		return v;
+	}
+
+	inline Vector operator-(Vector v1, const Vector& v2)
+	{
+		v1.x -= v2.x;
+		v1.y -= v2.y;
+		return v1;
+	}
+
+	inline Vector operator-(Vector v)
+	{
+		v.x *= -1;
+		v.y *= -1;
+		return v;
 	}
 
 	inline TRSMatrix operator*(const TRSMatrix& m1, float s)
@@ -173,7 +204,7 @@ namespace dae
 		scaleM.x3y3 = 1;
 		scaleM.x1y1 = scale.x;
 		scaleM.x2y2 = scale.y;
-		TRSMatrix ret = (transM * rotM) * scaleM;
+		TRSMatrix ret = transM * rotM * scaleM;
 		return std::move(ret);
 	}
 
@@ -185,6 +216,11 @@ namespace dae
 	inline Vector operator*(const Vector& a, const Vector& b)
 	{
 		return Vector{ a.x * b.x, a.y * b.y };
+	}
+
+	inline bool AreRectOverlapping(const Rect& r1, const Rect& r2)
+	{
+		return r1.x < r2.x + r2.w && r1.x > r2.x - r1.w && r1.y < r2.y + r2.h && r1.y > r2.y - r1.h;
 	}
 
 	inline bool IsPointInRect(const Rect& rect, float x, float y)
@@ -222,8 +258,52 @@ namespace dae
 		return a.x * b.y - b.x * a.x;
 	}
 
+	inline float SquareDistance(const Vector& a, const Vector& b)
+	{
+		Vector d = b + (-a);
+		return abs(Dot(d, d));
+	}
+
 	inline float Distance(const Vector& a, const Vector& b)
 	{
-		return sqrtf(Dot(a, b));
+		return sqrtf(SquareDistance(a,b));
 	}
+
+	inline bool IsEllipseInRect(const Rect& r, const Ellipse& e)
+	{
+		if (IsPointInEllipse(e, Vector{ r.x,r.y }))
+			return true;
+		if (IsPointInEllipse(e, Vector{ r.x,r.y + r.h }))
+			return true;
+		if (IsPointInEllipse(e, Vector{ r.x + r.w,r.y }))
+			return true;
+		if (IsPointInEllipse(e, Vector{ r.x + r.w,r.y + r.h }))
+			return true;
+		if (IsPointInRect(Rect{ r.x - e.radiusX, r.y - e.radiusY, r.w + e.radiusX * 2, r.h + e.radiusY * 2 }, e.center))
+			return true;
+		return false;
+	}
+
+	inline bool IsCircleInRect(const Rect& r, const Circle& c)
+	{
+		if (IsPointInCircle(c, Vector{ r.x,r.y }))
+			return true;
+		if (IsPointInCircle(c, Vector{ r.x,r.y + r.h }))
+			return true;
+		if (IsPointInCircle(c, Vector{ r.x + r.w,r.y }))
+			return true;
+		if (IsPointInCircle(c, Vector{ r.x + r.w,r.y + r.h }))
+			return true;
+		if (IsPointInRect(Rect{ r.x - c.radius, r.y - c.radius, r.w + c.radius * 2, r.h + c.radius * 2 }, c.center))
+			return true;
+		return false;
+	}
+
+	inline bool AreCircleOverlapping(const Circle& c1, const Circle& c2)
+	{
+		float sqrR = c1.radius + c2.radius;
+		sqrR *= sqrR;
+		return SquareDistance(c1.center, c2.center) < sqrR;
+	}
+
 }

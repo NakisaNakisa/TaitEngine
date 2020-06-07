@@ -2,7 +2,7 @@
 #include "Component.h"
 #include "SDL.h"
 
-namespace dae
+namespace tait
 {
 	class Texture2D;
 	class SpriteRenderComponent final : public Component

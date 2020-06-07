@@ -5,12 +5,12 @@
 using namespace std;
 using namespace chrono;
 
-void dae::Time::Create()
+void tait::Time::Create()
 {
 	m_LastTime = std::chrono::high_resolution_clock::now();
 }
 
-void dae::Time::Update()
+void tait::Time::Update()
 {
 	const auto currentTime = std::chrono::high_resolution_clock::now(); 
 	m_DeltaTime = std::chrono::duration<float>(currentTime - m_LastTime).count();
@@ -28,12 +28,12 @@ void dae::Time::Update()
 	}
 }
 
-int dae::Time::GetFPS() const
+int tait::Time::GetFPS() const
 {
 	return m_CurrentFPS;
 }
 
-float dae::Time::GetDeltaTime() const
+float tait::Time::GetDeltaTime() const
 {
 	return m_DeltaTime;
 }

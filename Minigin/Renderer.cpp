@@ -7,7 +7,7 @@
 #include "Scene.h"
 #include "GameObject.h"
 
-void dae::Renderer::Init(SDL_Window * window)
+void tait::Renderer::Init(SDL_Window * window)
 {
 	m_Renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (m_Renderer == nullptr) 
@@ -16,7 +16,7 @@ void dae::Renderer::Init(SDL_Window * window)
 	}
 }
 
-void dae::Renderer::Render() const
+void tait::Renderer::Render() const
 {
 	SDL_RenderClear(m_Renderer);
 
@@ -25,14 +25,12 @@ void dae::Renderer::Render() const
 	if (cam == nullptr)
 		return;
 
-	cam->GetGameObject().GetTransform().CalculateTRS();
-
 	SceneManager::GetInstance().Render();
 
 	SDL_RenderPresent(m_Renderer);
 }
 
-void dae::Renderer::Destroy()
+void tait::Renderer::Destroy()
 {
 	if (m_Renderer != nullptr)
 	{
@@ -41,14 +39,14 @@ void dae::Renderer::Destroy()
 	}
 }
 
-void dae::Renderer::RenderTexture(const Texture2D& texture, const Vector& p) const
+void tait::Renderer::RenderTexture(const Texture2D& texture, const Vector& p) const
 {
 	RenderTexture(texture, p.x, p.y);
 }
 
-void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y) const
+void tait::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y) const
 {
-	Vector3 p = CalculateCorrectPoint(x, y);
+	Vector p = GetTransformedPosition(x, y);
 	SDL_Rect dst;
 	dst.x = static_cast<int>(p.x);
 	dst.y = static_cast<int>(p.y);
@@ -56,14 +54,14 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 }
 
-void dae::Renderer::RenderTexture(const Texture2D& texture, const Rect& r) const
+void tait::Renderer::RenderTexture(const Texture2D& texture, const Rect& r) const
 {
 	RenderTexture(texture, r.x, r.y, r.w, r.h);
 }
 
-void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height) const
+void tait::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height) const
 {
-	Vector3 p = CalculateCorrectPoint(x, y);
+	Vector p = GetTransformedPosition(x, y);
 	SDL_Rect dst;
 	dst.x = static_cast<int>(p.x);
 	dst.y = static_cast<int>(p.y);
@@ -72,9 +70,9 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
 }
 
-void dae::Renderer::RenderSprite(const Texture2D& texture, const Rect& dst, const Rect& src) const
+void tait::Renderer::RenderSprite(const Texture2D& texture, const Rect& dst, const Rect& src) const
 {
-	Vector3 p = CalculateCorrectPoint(dst.x, dst.y);
+	Vector p = GetTransformedPosition(dst.x, dst.y);
 	SDL_Rect _dst;
 	_dst.x = (int)p.x;
 	_dst.y = (int)p.y;
@@ -88,16 +86,8 @@ void dae::Renderer::RenderSprite(const Texture2D& texture, const Rect& dst, cons
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), &_src, &_dst);
 }
 
-dae::Vector3 dae::Renderer::CalculateCorrectPoint(float x, float y) const
+tait::Vector tait::Renderer::GetTransformedPosition(float x, float y) const
 {
 	CameraComponent* cam = SceneManager::GetInstance().GetActiveScene().GetCamera();
-	Vector3 p{ x,y,1 };
-	p = cam->GetGameObject().GetTransform().GetTRSMatrix() * p;
-	return p;
-}
-
-dae::Vector dae::Renderer::CalculateCorrectScale(float x, float y) const
-{
-	CameraComponent* cam = SceneManager::GetInstance().GetActiveScene().GetCamera();
-	return Vector{ x,y } *cam->GetGameObject().GetTransform().GetScale();
+	return Vector{ x,y } - cam->GetGameObject().GetTransform().GetPosition();
 }

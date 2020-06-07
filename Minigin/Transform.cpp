@@ -1,37 +1,52 @@
 #include "MiniginPCH.h"
 #include "Transform.h"
 
-void dae::Transform::CalculateTRS()
+void tait::Transform::SetPosition(float x, float y)
 {
-	m_TRS = GetTrsMatrix(m_Position, m_Rotation, m_Scale);
-	InvertTRS(m_TRS);
+	SetPosition(Vector{ x,y });
 }
 
-void dae::Transform::SetPosition(float x, float y)
-{
-	m_Position.x = x;
-	m_Position.y = y;
-}
-
-void dae::Transform::SetPosition(const Vector& p)
+void tait::Transform::SetPosition(const Vector& p)
 {
 	m_Position = p;
+	m_Center = p + m_HalfSize;
+	m_Rect.x = p.x;
+	m_Rect.y = p.y;
 }
 
-void dae::Transform::SetRotation(float angle, bool isDegree)
+void tait::Transform::SetCenterPosition(float x, float y)
 {
-	if (isDegree)
-		angle = DegToRad(angle);
-	m_Rotation = angle;
+	SetCenterPosition(Vector{ x,y });
 }
 
-void dae::Transform::SetScale(float x, float y)
+void tait::Transform::SetCenterPosition(const Vector& p)
 {
-	m_Scale.x = x;
-	m_Scale.y = y;
+	m_Position = p + (-m_HalfSize);
+	m_Center = p;
+	m_Rect.x = p.x - m_HalfSize.x;
+	m_Rect.y = p.y - m_HalfSize.y;
 }
 
-void dae::Transform::SetScale(const Vector& s)
+void tait::Transform::SetSize(float w, float h)
 {
-	m_Scale = s;
+	SetSize(Vector{ w,h });
+}
+
+void tait::Transform::SetSize(const Vector& s)
+{
+	m_HalfSize = s / 2;
+	m_Size = s;
+	m_Center = m_Position + m_HalfSize;
+}
+
+void tait::Transform::SetHalfSize(float w, float h)
+{
+	SetHalfSize(Vector{ w,h });
+}
+
+void tait::Transform::SetHalfSize(const Vector& s)
+{
+	m_HalfSize = s;
+	m_Size = s * 2;
+	m_Center = m_Position + m_HalfSize;
 }
