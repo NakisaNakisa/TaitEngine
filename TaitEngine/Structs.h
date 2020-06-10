@@ -45,17 +45,17 @@ namespace tait
 			x1y3{}, x2y3{}, x3y3{};
 	};
 
-	bool IsFloatNOTZero(float f)
+	inline bool IsFloatNOTZero(float f)
 	{
 		return f < -FLT_EPSILON || f > FLT_EPSILON;
 	}
 
-	Vector OneVector(const Vector& v)
+	inline Vector OneVector(const Vector& v)
 	{
-		return { IsFloatNOTZero(v.x) ? v.x / abs(v.x) : 0, IsFloatNOTZero(v.y) ? v.y / abs(v.y) : 0 };
+		return Vector{ IsFloatNOTZero(v.x) ? v.x / abs(v.x) : 0, IsFloatNOTZero(v.y) ? v.y / abs(v.y) : 0 };
 	}
 
-	bool IsFloatEqual(float f, float equalTo)
+	inline bool IsFloatEqual(float f, float equalTo)
 	{
 		return abs(f - equalTo) < FLT_EPSILON;
 	}

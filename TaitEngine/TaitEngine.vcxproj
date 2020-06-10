@@ -112,6 +112,9 @@
 xcopy "$(SolutionDir)3rdParty\SDL2_image\lib\x86\*.dll" "$(OutputPath)" /R /Y
 xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x86\*.dll" "$(OutputPath)" /R /Y</Command>
     </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>Xinput.lib;Xinput9_1_0.lib;Winmm.lib;</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -137,6 +140,9 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x86\*.dll" "$(OutputPath)" /R /Y</Com
 xcopy "$(SolutionDir)3rdParty\SDL2_image\lib\x64\*.dll" "$(OutputPath)" /R /Y
 xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Command>
     </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>Xinput.lib;Xinput9_1_0.lib;Winmm.lib;</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -165,6 +171,9 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
 xcopy "$(SolutionDir)3rdParty\SDL2_image\lib\x86\*.dll" "$(OutputPath)" /R /Y
 xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x86\*.dll" "$(OutputPath)" /R /Y</Command>
     </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>Xinput.lib;Xinput9_1_0.lib;Winmm.lib;</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -193,8 +202,12 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x86\*.dll" "$(OutputPath)" /R /Y</Com
 xcopy "$(SolutionDir)3rdParty\SDL2_image\lib\x64\*.dll" "$(OutputPath)" /R /Y
 xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Command>
     </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>Xinput.lib;Xinput9_1_0.lib;Winmm.lib;</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Audio.h" />
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="CharacterControllerComponent.h" />
     <ClInclude Include="ColliderComponent.h" />
@@ -203,12 +216,18 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
     <ClInclude Include="Component.h" />
     <ClInclude Include="EventSystem.h" />
     <ClInclude Include="Font.h" />
+    <ClInclude Include="GameAudio.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Locator.h" />
+    <ClInclude Include="LoggedAudio.h" />
+    <ClInclude Include="NullAudio.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="PseudoPhysicsComponent.h" />
+    <ClInclude Include="StateMachine.h" />
     <ClInclude Include="Structs.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="SpriteRenderComponent.h" />
+    <ClInclude Include="ThreadProviderh.h" />
     <ClInclude Include="Time.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="TaitEngine.h" />
@@ -231,9 +250,11 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="EventSystem.cpp" />
     <ClCompile Include="Font.cpp" />
+    <ClCompile Include="GameAudio.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="PseudoPhysicsComponent.cpp" />
+    <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="TaitEngine.cpp" />
     <ClCompile Include="TaitPCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -250,6 +271,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\x64\*.dll" "$(OutputPath)" /R /Y</Com
     <ClCompile Include="SpriteRenderComponent.cpp" />
     <ClCompile Include="TextObject.cpp" />
     <ClCompile Include="Texture2D.cpp" />
+    <ClCompile Include="ThreadProviderh.cpp" />
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>

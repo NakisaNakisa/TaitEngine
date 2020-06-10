@@ -80,7 +80,7 @@ inline void tait::GameObject::RemoveComponent()
 {
 	for (size_t i = 0; i < m_Components.size(); i++)
 	{
-		if (typeid(T*) == typeid(m_Components[i]))
+		if (T* t = dynamic_cast<T*>(m_Components[i]))
 		{
 			RemoveComponentHelper(i);
 			break;

@@ -47,8 +47,6 @@ void tait::RenderComponent::SetSize(Vector s)
 {
 	m_DestRect.w = s.x;
 	m_DestRect.h = s.y;
-	m_DestRect.x = m_GameObject.GetTransform().GetPosition().x - s.x / 2.f;
-	m_DestRect.y = m_GameObject.GetTransform().GetPosition().y - s.y / 2.f;
 }
 
 void tait::RenderComponent::SetText(const std::string& text, SDL_Color color)

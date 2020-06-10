@@ -36,7 +36,7 @@ namespace tait
 		bool IsTrigger() const { return (m_Flag & (bool)Flag::Trigger) != 0; }
 	private:
 		Rect m_Coords;
-		bool m_Flag{};
+		DWORD m_Flag{};
 
 	};
 }

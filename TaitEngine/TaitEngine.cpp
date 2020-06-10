@@ -13,6 +13,7 @@
 #include "Time.h"
 #include "SpriteRenderComponent.h"
 #include "CameraComponent.h"
+#include "ThreadProviderh.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -58,6 +59,8 @@ void tait::TaitEngine::Initialize()
  */
 void tait::TaitEngine::LoadGame()
 {
+	if (!m_Demo)
+		return;
 	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
 	SceneManager::GetInstance().SetActiveScene("Demo");
 
@@ -105,13 +108,6 @@ void tait::TaitEngine::Cleanup()
 
 void tait::TaitEngine::Run()
 {
-	Initialize();
-
-	// tell the resource manager where he can find the game data
-	ResourceManager::GetInstance().Init("../Data/");
-
-	LoadGame();
-
 	{
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
@@ -127,22 +123,22 @@ void tait::TaitEngine::Run()
 			sceneManager.PreUpdate();
 			sceneManager.Update();
 			sceneManager.PostUpdate();
-			renderer.Render();	
-			MiniUpdate();
+			renderer.Render();
 		}
+
+		ThreadProvider::GetInstance().CleanUp();
 	}
 
 	Cleanup();
 }
 
-void tait::TaitEngine::MiniUpdate()
+void tait::TaitEngine::SetWindowSize(int w, int h)
 {
-	int fps = Time::GetInstance().GetFPS();
-	m_pFPSRC->SetText(std::to_string(fps).c_str());
+	m_W = w;
+	m_H = h;
+}
 
-	//CameraComponent* cam = SceneManager::GetInstance().GetActiveScene().GetCamera();
-	//float dt = Time::GetInstance().GetDeltaTime();
-	//
-	//Vector moveRight = cam->GetGameObject().GetTransform().GetPosition() + Vector{ dt * 20, 0 };
-	//cam->GetGameObject().GetTransform().SetPosition(moveRight);
+void tait::TaitEngine::SetFullScreen(bool isFullscreen)
+{
+	m_FullScreen = isFullscreen;
 }

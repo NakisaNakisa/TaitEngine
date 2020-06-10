@@ -102,6 +102,27 @@
     <ClInclude Include="CharacterControllerComponent.h">
       <Filter>Component Files</Filter>
     </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadProviderh.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Locator.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NullAudio.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LoggedAudio.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameAudio.h">
+      <Filter>Engine Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Font.cpp">
@@ -169,6 +190,15 @@
     </ClCompile>
     <ClCompile Include="CharacterControllerComponent.cpp">
       <Filter>Component Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>Engine Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameAudio.cpp">
+      <Filter>Component Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadProviderh.cpp">
+      <Filter>Engine Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
