@@ -53,7 +53,12 @@ void tait::SceneManager::SetActiveScene(const std::string& name)
 	}
 }
 
-void tait::SceneManager::SetActiveScene(int id)
+void tait::SceneManager::SetActiveScene(int id, bool deactivateLastScene)
 {
+	if (deactivateLastScene)
+	{
+		if (m_ActiveScene)
+			m_ActiveScene->Activate(false);
+	}
 	m_ActiveScene = m_Scenes[id];
 }

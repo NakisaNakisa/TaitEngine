@@ -3,6 +3,11 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 
+tait::GameObject::GameObject()
+{
+	m_Transform.SetPosition(m_Transform.GetPosition());
+}
+
 tait::GameObject::~GameObject()
 {
 	for (Component* c : m_Components)

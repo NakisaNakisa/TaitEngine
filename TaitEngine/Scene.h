@@ -15,6 +15,7 @@ namespace tait
 		void FindCamera();
 		void SetActiveCamera(CameraComponent* activeCam);
 		CameraComponent* GetCamera() const { return m_ActiveCamera; }
+		void Activate(bool isActive);
 
 		void AddCollider(ColliderComponent* collider);
 		void RemoveCollider(ColliderComponent* collider);

@@ -7,6 +7,8 @@
 #include "Locator.h"
 #include <fstream>
 #include "ColliderComponent.h"
+#include "CharacterControllerComponent.h"
+#include "SpriteRenderComponent.h"
 
 using namespace tait;
 
@@ -23,18 +25,18 @@ Game::Game(int windowW, int windowH)
 	m_MainMenu->Add(go);
 
 
-	go = std::make_shared<GameObject>();
-	go->AddComponent<CameraComponent>();
-	m_MainMenu->Add(go);
+	m_Camera = std::make_shared<GameObject>();
+	m_Camera->AddComponent<CameraComponent>();
+	m_MainMenu->Add(m_Camera);
 	m_MainMenu->FindCamera();
 
 	auto gameAudio = std::make_shared<GameAudio>();
 	Locator::Initialize();
 	Locator::Provide(&*gameAudio);
 
-	ParseLevels();
-
 	SceneManager::GetInstance().SetActiveScene((int)Levels::MainMenu);
+
+	ParseLevels();
 }
 
 void Game::CleanUp()
@@ -52,7 +54,10 @@ void Game::ParseLevels()
 		std::string line{};
 		std::getline(levelFile, line);
 		std::string name{ "Level" + std::to_string(i) };
-		auto scene = &SceneManager::GetInstance().CreateScene(name);
+		m_Levels.push_back(&SceneManager::GetInstance().CreateScene(name));
+		int id = i - 1;
+		m_Levels[id]->Add(m_Camera);
+		m_Levels[id]->FindCamera();
 		auto go = std::make_shared<GameObject>();
 		auto img = go->AddComponent<RenderComponent>();
 		img->SetTexture(name + ".png");
@@ -71,6 +76,7 @@ void Game::ParseLevels()
 				v[i] = std::stof(val);
 			}
 			col->SetRect(Rect{ v[0],v[1],v[2],v[3] });
+			m_Levels[id]->AddCollider(col);
 		}
 		while (true)
 		{
@@ -88,6 +94,22 @@ void Game::ParseLevels()
 			}
 			col->SetRect(Rect{ v[0],v[1],v[2],v[3] });
 			col->SetIgnoreUp(true);
+			m_Levels[id]->AddCollider(col);
 		}
+		m_Levels[id]->Add(go);
+		go = std::make_shared<GameObject>();
+		auto col = go->AddComponent<ColliderComponent>();
+		col->SetSize(Vector{ 32,32 });
+		col->SetStatic(false);
+		go->AddComponent<PseudoPhysicsComponent>();
+		auto sprite = go->AddComponent<SpriteRenderComponent>();
+		sprite->SetSprite("Character.png", 8, 12, 0.2f, 8);
+		sprite->SetAmount(8);
+		sprite->SetStartFrame(0);
+		sprite->SetSize(Vector{ 32, 32 });
+		auto player = go->AddComponent<CharacterControllerComponent>();
+		player->GetGameObject().SetPosition(50, 424 - 64);
+		m_Levels[id]->Add(go);
+		SceneManager::GetInstance().SetActiveScene((int)Levels::Level1);
 	}
 }

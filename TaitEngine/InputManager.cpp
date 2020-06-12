@@ -7,20 +7,62 @@
 
 bool tait::InputManager::ProcessInput()
 {
-	for (DWORD i = 0; i < 4; i++)
+	for (int i = 0; i < m_MaxKeys; i++)
+	{
+		m_PressedKey[i] = NULL;
+		m_ReleasedKey[i] = NULL;
+	}
+	for (DWORD i = 0; i < (unsigned long)m_MaxControllers; i++)
 	{
 		ZeroMemory(&m_CurrentState[i], sizeof(XINPUT_STATE));
 		XInputGetState(i, &m_CurrentState[i]);		
 	}
 	SDL_Event e;
+	int currentI{};
 	while (SDL_PollEvent(&e)) {
 		if (e.type == SDL_QUIT) {
 			return false;
 		}
-		if (e.type == SDL_KEYDOWN) {
-			m_CurrentKey = e.key.keysym.sym;
+		if (e.type == SDL_KEYDOWN) 
+		{
+			if (currentI < m_MaxKeys)
+			{
+				bool isAllreadyPressed{ false };
+				for (int i = 0; i < m_MaxKeys; i++)
+				{
+					if (m_CurrentKey[i] == e.key.keysym.sym)
+					{
+						isAllreadyPressed = true;
+						break;
+					}
+				}
+				if (!isAllreadyPressed)
+				{
+					while (m_CurrentKey[currentI] != NULL)
+					{
+						currentI++;
+						if (currentI >= m_MaxKeys)
+							break;
+					}
+					m_PressedKey[currentI] = e.key.keysym.sym;
+					m_CurrentKey[currentI] = e.key.keysym.sym;
+					currentI++;
+				}
+			}
 		}
-		if (e.type == SDL_MOUSEBUTTONDOWN) {
+		if (e.type == SDL_KEYUP)
+		{
+			for (int i = 0; i < m_MaxKeys; i++)
+			{
+				if (m_CurrentKey[i] == e.key.keysym.sym)
+				{
+					m_CurrentKey[i] = NULL;
+					m_ReleasedKey[i] = e.key.keysym.sym;
+				}
+			}
+		}
+		if (e.type == SDL_MOUSEBUTTONDOWN) 
+		{
 			m_CurrentMouseButton = e.button;
 		}
 	}
@@ -66,7 +108,32 @@ bool tait::InputManager::IsControllerButtonPressed(tait::ControllerButton button
 
 bool tait::InputManager::IsKeyDown(SDL_Keycode key) const
 {
-	return key == m_CurrentKey;
+	for (int i = 0; i < m_MaxKeys; i++)
+	{
+		if (key == m_PressedKey[i])
+			return true;
+	}
+	return false;
+}
+
+bool tait::InputManager::IsKeyPressed(SDL_Keycode key) const
+{
+	for (int i = 0; i < m_MaxKeys; i++)
+	{
+		if (key == m_CurrentKey[i])
+			return true;
+	}
+	return false;
+}
+
+bool tait::InputManager::IsKeyUp(SDL_Keycode key) const
+{
+	for (int i = 0; i < m_MaxKeys; i++)
+	{
+		if (key == m_ReleasedKey[i])
+			return true;
+	}
+	return false;
 }
 
 //source https://docs.microsoft.com/en-us/windows/win32/xinput/getting-started-with-xinput#multiple-controllers
@@ -116,6 +183,7 @@ tait::Vector tait::InputManager::ControllerStickValues(int playerId, bool isLeft
 	{
 		magnitude = 0.0;
 		normalizedMagnitude = 0.0;
+		return Vector{};
 	}
 	return Vector{ normalizedLX, normalizedLY };
 }

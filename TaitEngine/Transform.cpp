@@ -43,6 +43,8 @@ void tait::Transform::SetSize(const Vector& s)
 	m_HalfSize = s / 2;
 	m_Size = s;
 	m_Center = m_Position + m_HalfSize;
+	m_Rect.w = s.x;
+	m_Rect.h = s.y;
 }
 
 void tait::Transform::SetHalfSize(float w, float h)
@@ -55,4 +57,6 @@ void tait::Transform::SetHalfSize(const Vector& s)
 	m_HalfSize = s;
 	m_Size = s * 2;
 	m_Center = m_Position + m_HalfSize;
+	m_Rect.w = s.x * 2;
+	m_Rect.h = s.y * 2;
 }

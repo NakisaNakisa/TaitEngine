@@ -50,6 +50,11 @@ namespace tait
 		return f < -FLT_EPSILON || f > FLT_EPSILON;
 	}
 
+	inline bool IsFloatZero(float f)
+	{
+		return !IsFloatNOTZero(f);
+	}
+
 	inline Vector OneVector(const Vector& v)
 	{
 		return Vector{ IsFloatNOTZero(v.x) ? v.x / abs(v.x) : 0, IsFloatNOTZero(v.y) ? v.y / abs(v.y) : 0 };
@@ -240,7 +245,7 @@ namespace tait
 
 	inline bool IsPointInRect(const Rect& rect, float x, float y)
 	{
-		return x > rect.x&& x < rect.x + rect.w && y > rect.y&& y < rect.y + rect.h;
+		return x > rect.x && x < rect.x + rect.w && y > rect.y && y < rect.y + rect.h;
 	}
 
 	inline bool IsPointInRect(const Rect& rect, const Vector& point)

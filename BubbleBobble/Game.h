@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene.h"
+#include "GameObject.h"
 
 class Game
 {
@@ -16,6 +17,7 @@ public:
 	void ParseLevels();
 private:
 	const int m_NrOfLevels{ 1 };
+	std::shared_ptr<tait::GameObject> m_Camera{};
 	tait::Scene* m_MainMenu;
 	std::vector<tait::Scene*> m_Levels;
 };

@@ -9,7 +9,7 @@ namespace tait
 	public:
 		Scene& CreateScene(const std::string& name);
 		void SetActiveScene(const std::string& name);
-		void SetActiveScene(int id);
+		void SetActiveScene(int id, bool deactivateLastScene = true);
 		Scene& GetActiveScene() const { return *m_ActiveScene; }
 
 		void PreUpdate();
@@ -21,6 +21,5 @@ namespace tait
 		SceneManager() = default;
 		std::shared_ptr<Scene> m_ActiveScene{ nullptr };
 		std::vector<std::shared_ptr<Scene>> m_Scenes;
-		void SetObjects(bool isActive);
 	};
 }

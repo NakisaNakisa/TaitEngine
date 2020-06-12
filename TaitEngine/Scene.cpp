@@ -36,6 +36,12 @@ void tait::Scene::SetActiveCamera(CameraComponent* activeCam)
 	m_ActiveCamera = activeCam;
 }
 
+void tait::Scene::Activate(bool isActive)
+{
+	for (auto go : m_Objects)
+		go->SetActiveStatus(isActive);
+}
+
 void tait::Scene::AddCollider(ColliderComponent* collider)
 {
 	auto it = std::find(m_Colliders.begin(), m_Colliders.end(), collider);

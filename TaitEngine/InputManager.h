@@ -33,10 +33,16 @@ namespace tait
 		bool ProcessInput();
 		bool IsControllerButtonPressed(ControllerButton button, int playerId) const;
 		bool IsKeyDown(SDL_Keycode key) const;
+		bool IsKeyPressed(SDL_Keycode key) const;
+		bool IsKeyUp(SDL_Keycode key) const;
 		Vector ControllerStickValues(int playerId, bool isLeftStick) const;
 	private:
-		XINPUT_STATE m_CurrentState[4]{};
-		SDL_Keycode m_CurrentKey{};
+		static const int m_MaxKeys{ 10 };
+		static const int m_MaxControllers{ 4 };
+		XINPUT_STATE m_CurrentState[m_MaxControllers]{};
+		SDL_Keycode m_PressedKey[m_MaxKeys]{};
+		SDL_Keycode m_CurrentKey[m_MaxKeys]{};
+		SDL_Keycode m_ReleasedKey[m_MaxKeys]{};
 		SDL_MouseButtonEvent m_CurrentMouseButton{};
 	};
 }

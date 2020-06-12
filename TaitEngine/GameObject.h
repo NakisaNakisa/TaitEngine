@@ -4,6 +4,8 @@
 #include "Component.h"
 #include "RenderComponent.h"
 #include "CameraComponent.h"
+#include "PseudoPhysicsComponent.h"
+#include "SpriteRenderComponent.h"
 
 namespace tait
 {
@@ -35,7 +37,7 @@ namespace tait
 		void SetActiveStatus(bool isActive) { m_IsActive = isActive; }
 		bool IsActive() const { return m_IsActive; }
 
-		GameObject() = default;
+		GameObject();
 		virtual ~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;

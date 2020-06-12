@@ -24,19 +24,22 @@ namespace tait
 		void SetIsTrigger(bool isTrigger);
 		void SetIgnoreUp(bool ignore);
 		void SetIgnoreDown(bool ignore);
-		void IgnoreRight(bool ignore);
+		void SetIgnoreRight(bool ignore);
 		void SetIgnoreLeft(bool ignore);
+		void SetStatic(bool isStatic);
 
 		bool IgnoreCollision(const Vector& dir);
-		void MoveBack(Transform& other, const Vector& pos, Vector& velocity);
+		void MoveBack(Transform& other, Vector& velocity);
 
 		const Rect& GetCoords() const { return m_Coords; }
 		bool GetFlag() const { return m_Flag; }
 		
 		bool IsTrigger() const { return (m_Flag & (bool)Flag::Trigger) != 0; }
+
+		void Update() override;
 	private:
 		Rect m_Coords;
 		DWORD m_Flag{};
-
+		bool m_IsStatic{ true };
 	};
 }

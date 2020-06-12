@@ -20,9 +20,10 @@ namespace tait
 
 		bool IsGrounded();
 	private:
+		static int m_PlayerAmount;
 		PseudoPhysicsComponent* m_Physics;
-		float m_MoveSpeed{ 50 };
-		float m_JumpForce{ 50 };
+		float m_MoveSpeed{ 20 };
+		float m_JumpForce{ 300 };
 		int m_PlayerId{};
 	};
 }

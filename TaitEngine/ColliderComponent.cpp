@@ -21,6 +21,7 @@ void tait::ColliderComponent::SetSize(const Vector& s)
 {
 	m_Coords.w = s.x;
 	m_Coords.h = s.y;
+	m_GameObject.GetTransform().SetSize(s);
 }
 
 void tait::ColliderComponent::SetRect(const Rect& r)
@@ -52,7 +53,7 @@ void tait::ColliderComponent::SetIgnoreDown(bool ignore)
 		m_Flag &= ~(1 << 3);
 }
 
-void tait::ColliderComponent::IgnoreRight(bool ignore)
+void tait::ColliderComponent::SetIgnoreRight(bool ignore)
 {
 	if (ignore)
 		m_Flag |= 1 << 4;
@@ -66,6 +67,11 @@ void tait::ColliderComponent::SetIgnoreLeft(bool ignore)
 		m_Flag |= 1 << 5;
 	else
 		m_Flag &= ~(1 << 5);
+}
+
+void tait::ColliderComponent::SetStatic(bool isStatic)
+{
+	m_IsStatic = isStatic;
 }
 
 bool tait::ColliderComponent::IgnoreCollision(const Vector& dir)
@@ -92,24 +98,63 @@ bool tait::ColliderComponent::IgnoreCollision(const Vector& dir)
 	}
 	return false;
 }
-
-void tait::ColliderComponent::MoveBack(Transform& other, const Vector& pos, Vector& velocity)
+#include "Time.h"
+void tait::ColliderComponent::MoveBack(Transform& other, Vector& velocity)
 {
-	float xDst{ pos.x - m_Coords.x };
-	float yDst{ pos.y - m_Coords.y };
-
-	if (xDst > m_Coords.w / 2.f)
-		xDst = m_Coords.w - xDst;
-	if (yDst > m_Coords.h / 2.f)
-		yDst = m_Coords.h - yDst;
-	if (yDst > xDst)
+	bool moveY{ IsFloatZero(velocity.x) };
+	const Rect& otherRect = other.GetRect();
+	if (!moveY)
 	{
-		other.SetPosition(other.GetPosition() + Vector{ 0, yDst });
-		velocity.y = 0;
+		float dt{ Time::GetInstance().GetDeltaTime() };
+		//check left side
+		if (velocity.x < 0)
+		{
+			const Vector p1{ otherRect.x, otherRect.y + velocity.y * dt + 1};
+			const Vector p2{ otherRect.x, otherRect.y + otherRect.h - velocity.y * dt - 1};
+			moveY = !(IsPointInRect(m_Coords, p1) && IsPointInRect(m_Coords, p2));
+		}
+		else
+		{
+			const Vector p1{ otherRect.x + otherRect.w, otherRect.y + velocity.y * dt + 1};
+			const Vector p2{ otherRect.x + otherRect.w, otherRect.y + otherRect.h - velocity.y * dt - 1 };
+			moveY = !(IsPointInRect(m_Coords, p1) && IsPointInRect(m_Coords, p2));
+		}
+	}
+
+	if (moveY)
+	{
+		if (velocity.y > 0)
+		{
+			const Vector p1{ otherRect.x, otherRect.y + otherRect.h };
+			const Vector p2{ otherRect.x + otherRect.w, otherRect.y + otherRect.h };
+			Rect shortRect{ m_Coords.x, m_Coords.y - 2, m_Coords.w, 5.f };
+			if(IsPointInRect(m_Coords, p1) || IsPointInRect(m_Coords, p2))
+			{
+				other.SetPosition(Vector{ other.GetPosition().x, m_Coords.y - other.GetSize().y });
+				velocity.y = 0;
+			}
+		}
+		else
+		{
+			other.SetPosition(Vector{ other.GetPosition().x, m_Coords.y + m_Coords.h });
+			velocity.y = 0;
+		}
 	}
 	else
 	{
-		other.SetPosition(other.GetPosition() + Vector{ xDst, 0 });
+		if (velocity.x > 0)
+			other.SetPosition(Vector{ m_Coords.x - other.GetSize().x, other.GetPosition().y });
+		else
+			other.SetPosition(Vector{ m_Coords.x + m_Coords.w, other.GetPosition().y });
 		velocity.x = 0;
+	}
+}
+
+void tait::ColliderComponent::Update()
+{
+	if (!m_IsStatic)
+	{
+		m_Coords.x = m_GameObject.GetTransform().GetPosition().x;
+		m_Coords.y = m_GameObject.GetTransform().GetPosition().y;
 	}
 }
