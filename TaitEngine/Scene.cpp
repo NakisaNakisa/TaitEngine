@@ -21,6 +21,13 @@ void Scene::Add(const std::shared_ptr<GameObject>& object)
 	std::sort(m_Objects.begin(), m_Objects.end(), objSort);
 }
 
+void tait::Scene::Remove(const std::shared_ptr<GameObject>& object)
+{
+	auto it = std::find(m_Objects.begin(), m_Objects.end(), object);
+	if (it != m_Objects.end())
+		m_Objects.erase(it);
+}
+
 void tait::Scene::FindCamera()
 {
 	for (auto& object : m_Objects)
@@ -38,7 +45,7 @@ void tait::Scene::SetActiveCamera(CameraComponent* activeCam)
 
 void tait::Scene::Activate(bool isActive)
 {
-	for (auto go : m_Objects)
+	for (auto& go : m_Objects)
 		go->SetActiveStatus(isActive);
 }
 

@@ -21,10 +21,19 @@ void tait::Statemachine::Transition(State* stateToTransitionTo)
 	if (it != m_States.end())
 	{
 		if (m_CurrentState)
+		{
 			m_CurrentState->Exit();
+			m_LastState = m_CurrentState;
+		}
 		m_CurrentState = stateToTransitionTo;
 		m_CurrentState->Enter();
 	}
+}
+
+void tait::Statemachine::Transition()
+{
+	if (m_LastState)
+		Transition(m_LastState);
 }
 
 void tait::Statemachine::Update()

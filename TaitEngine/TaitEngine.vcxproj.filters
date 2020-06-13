@@ -19,6 +19,9 @@
     <Filter Include="EventSystems">
       <UniqueIdentifier>{a91ea932-6dd1-43d6-8b55-8ca6e352557b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tools">
+      <UniqueIdentifier>{2a34abc0-71a2-4745-b7bb-8c5d0607a6dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -123,6 +126,9 @@
     <ClInclude Include="GameAudio.h">
       <Filter>Engine Files</Filter>
     </ClInclude>
+    <ClInclude Include="DurationTool.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Font.cpp">
@@ -199,6 +205,9 @@
     </ClCompile>
     <ClCompile Include="ThreadProviderh.cpp">
       <Filter>Engine Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DurationTool.cpp">
+      <Filter>Component Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

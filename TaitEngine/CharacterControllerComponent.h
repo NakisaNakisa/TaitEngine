@@ -18,6 +18,15 @@ namespace tait
 
 		virtual void Update() override;
 
+		int GetPlayerId() const { return m_PlayerId; }
+		PseudoPhysicsComponent* GetPhysics() const { return m_Physics; }
+		float GetJumpForce() const { return m_JumpForce; }
+		float GetMoveSpeed() const { return m_MoveSpeed; }
+
+		void SetMoveSpeed(float moveSpeed) { m_MoveSpeed = moveSpeed; }
+		void SetJumpForce(float jumpForce) { m_JumpForce = jumpForce; }
+
+
 		bool IsGrounded();
 	private:
 		static int m_PlayerAmount;

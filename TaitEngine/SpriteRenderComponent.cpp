@@ -17,6 +17,8 @@ void tait::SpriteRenderComponent::Update()
 {
 	m_DstRect.x = m_GameObject.GetTransform().GetPosition().x;
 	m_DstRect.y = m_GameObject.GetTransform().GetPosition().y;
+	if (!m_IsUpdating)
+		return;
 	m_Timer += Time::GetInstance().GetDeltaTime();
 	if (m_Timer >= m_FrameDuration)
 	{
@@ -45,8 +47,11 @@ void tait::SpriteRenderComponent::SetSize(const Vector& size)
 
 void tait::SpriteRenderComponent::SetStartFrame(int startFrame)
 { 
-	m_StartFrame = startFrame;
-	m_CurrentFrame = m_StartFrame;
+	if (m_StartFrame != startFrame)
+	{
+		m_StartFrame = startFrame;
+		m_CurrentFrame = m_StartFrame;
+	}
 }
 
 tait::SpriteRenderComponent::SpriteRenderComponent(GameObject& go)

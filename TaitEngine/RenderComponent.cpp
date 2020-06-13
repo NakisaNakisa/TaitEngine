@@ -13,7 +13,10 @@ void tait::RenderComponent::Render() const
 
 	if (m_Texture)
 	{
-		Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
+		if (m_DestRect.w > FLT_EPSILON)
+			Renderer::GetInstance().RenderTexture(*m_Texture, m_DestRect);
+		else
+			Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y);
 	}
 	if (m_TextTexture)
 	{
@@ -43,10 +46,27 @@ void tait::RenderComponent::Update()
 	}
 }
 
-void tait::RenderComponent::SetSize(Vector s)
+tait::Vector tait::RenderComponent::GetSize() const
+{
+	return Vector{ m_DestRect.w, m_DestRect.h };
+}
+
+void tait::RenderComponent::SetPosition(const Vector& s)
+{
+	m_DestRect.x = s.x;
+	m_DestRect.y = s.y;
+	m_GameObject.GetTransform().SetPosition(s);
+}
+
+void tait::RenderComponent::SetSize(const Vector& s)
 {
 	m_DestRect.w = s.x;
 	m_DestRect.h = s.y;
+}
+
+void tait::RenderComponent::SetDestRect(const Rect& r)
+{
+	m_DestRect = r;
 }
 
 void tait::RenderComponent::SetText(const std::string& text, SDL_Color color)

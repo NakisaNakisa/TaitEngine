@@ -22,6 +22,8 @@ namespace tait
 		template <typename T>
 		inline T* AddComponent();
 		template <typename T>
+		inline void AddComponent(T* component);
+		template <typename T>
 		inline T* GetComponent();
 		template <typename T>
 		void RemoveComponent();
@@ -64,6 +66,13 @@ inline T* tait::GameObject::AddComponent()
 		return newT;
 	}
 	return nullptr;
+}
+
+template<typename T>
+inline void tait::GameObject::AddComponent(T* component)
+{
+	if (dynamic_cast<Component*>(component))
+		m_Components.push_back(component);
 }
 
 template<typename T>

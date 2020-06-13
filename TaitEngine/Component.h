@@ -13,6 +13,7 @@ namespace tait
 		virtual ~Component() = default;
 
 		void SetActiveStatus(bool isActive) { m_IsActive = isActive; }
+		bool GetActiveStatus() const { return m_IsActive; }
 		bool IsActive() const { return m_IsActive; }
 
 		GameObject& GetGameObject() const { return m_GameObject; }

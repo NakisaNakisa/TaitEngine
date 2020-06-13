@@ -127,8 +127,8 @@ void tait::ColliderComponent::MoveBack(Transform& other, Vector& velocity)
 		{
 			const Vector p1{ otherRect.x, otherRect.y + otherRect.h };
 			const Vector p2{ otherRect.x + otherRect.w, otherRect.y + otherRect.h };
-			Rect shortRect{ m_Coords.x, m_Coords.y - 2, m_Coords.w, 5.f };
-			if(IsPointInRect(m_Coords, p1) || IsPointInRect(m_Coords, p2))
+			Rect shortRect{ m_Coords.x, m_Coords.y, m_Coords.w, m_Coords.h / 3.f };
+			if(IsPointInRect(shortRect, p1) || IsPointInRect(shortRect, p2))
 			{
 				other.SetPosition(Vector{ other.GetPosition().x, m_Coords.y - other.GetSize().y });
 				velocity.y = 0;

@@ -21,12 +21,42 @@
     <ClCompile Include="Game.cpp">
       <Filter>Game Files</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Game Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelTransitionState.cpp">
+      <Filter>Game Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Game Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IngameState.cpp">
+      <Filter>Game Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuState.cpp">
+      <Filter>Game Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
       <Filter>Game Files</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
+      <Filter>Game Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelTransitionState.h">
+      <Filter>Game Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>Game Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IngameState.h">
+      <Filter>Game Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Game Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuState.h">
       <Filter>Game Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -61,4 +61,5 @@ void tait::SceneManager::SetActiveScene(int id, bool deactivateLastScene)
 			m_ActiveScene->Activate(false);
 	}
 	m_ActiveScene = m_Scenes[id];
+	m_ActiveScene->Activate(true);
 }

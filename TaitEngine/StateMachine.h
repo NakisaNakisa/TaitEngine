@@ -1,6 +1,5 @@
 #pragma once
 
-
 namespace tait
 {
 	class State
@@ -18,9 +17,11 @@ namespace tait
 		void RemoveState(State* stateToRemove);
 
 		void Transition(State* stateToTransitionTo);
+		void Transition();
 		void Update();
 	private:
 		std::vector<State*> m_States{};
 		State* m_CurrentState{};
+		State* m_LastState{};
 	};
 }

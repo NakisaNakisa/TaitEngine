@@ -19,7 +19,14 @@ namespace tait
 		virtual void PreUpdate() override;
 		virtual void PostUpdate() override;
 
-		
+		const Vector& GetVelocity() const { return m_Velocity; }
+		const Vector& GetMaxVelocity() const { return m_MaxVelocity; }
+		float GetGravity() const { return m_Gravity; }
+		float GetFriction() const { return m_Friction; }
+
+		void SetMaxVelocity(const Vector& vel) { m_MaxVelocity = vel; }
+		void SetGravity(float grav) { m_Gravity = grav; }
+		void SetFriction(float fric) { m_Friction = fric; }
 
 		bool IsGrounded() const;
 		Vector& AcessAcceleration();
@@ -32,7 +39,6 @@ namespace tait
 		Vector m_MaxVelocity;
 		float m_Gravity;
 		float m_Friction;
-		float m_GroundFriction;
 
 		void CapVelocity();
 	};

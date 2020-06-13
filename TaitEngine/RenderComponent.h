@@ -12,7 +12,11 @@ namespace tait
 		void Render() const override;
 		void Update() override;
 
-		void SetSize(Vector s);
+		Vector GetSize() const;
+
+		void SetPosition(const Vector& s);
+		void SetSize(const Vector& s);
+		void SetDestRect(const Rect& r);
 		void SetText(const std::string& text, SDL_Color color = SDL_Color{ 255,255,0,255 });
 		void SetTexture(const std::string& dataPath);
 

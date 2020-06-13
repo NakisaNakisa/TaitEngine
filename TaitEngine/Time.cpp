@@ -15,6 +15,8 @@ void tait::Time::Update()
 	const auto currentTime = std::chrono::high_resolution_clock::now(); 
 	m_DeltaTime = std::chrono::duration<float>(currentTime - m_LastTime).count();
 	m_LastTime = currentTime;
+	if (!m_IsTimeRunning)
+		m_DeltaTime = 0;
 	m_AccumulatedTime += m_DeltaTime;
 	m_FrameCounter++;
 	if (m_AccumulatedTime >= 1)
@@ -36,4 +38,9 @@ int tait::Time::GetFPS() const
 float tait::Time::GetDeltaTime() const
 {
 	return m_DeltaTime;
+} 
+
+void tait::Time::ToggleTime()
+{
+	m_IsTimeRunning = !m_IsTimeRunning;
 }

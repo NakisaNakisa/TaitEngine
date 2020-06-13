@@ -12,6 +12,7 @@ namespace tait
 		friend Scene& SceneManager::CreateScene(const std::string& name);
 	public:
 		void Add(const std::shared_ptr<GameObject>& object);
+		void Remove(const std::shared_ptr<GameObject>& object);
 		void FindCamera();
 		void SetActiveCamera(CameraComponent* activeCam);
 		CameraComponent* GetCamera() const { return m_ActiveCamera; }

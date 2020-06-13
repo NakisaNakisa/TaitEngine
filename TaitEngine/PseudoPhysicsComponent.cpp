@@ -10,11 +10,11 @@
 tait::PseudoPhysicsComponent::PseudoPhysicsComponent(GameObject& go)
 	: Component(go)
 	, m_Collider{ go.GetComponent<ColliderComponent>() }
-	, m_Gravity{ 100.f }
+	, m_Gravity{ 150.f }
 	, m_Friction{ 200.f }
 	, m_Velocity{}
 	, m_Acceleration{}
-	, m_MaxVelocity{ 70, 130 }
+	, m_MaxVelocity{ 70, 150 }
 {
 	if (!m_Collider)
 		m_Collider = m_GameObject.AddComponent<ColliderComponent>();
@@ -55,8 +55,10 @@ void tait::PseudoPhysicsComponent::PostUpdate()
 {
 	const std::vector<ColliderComponent*>& colliders = SceneManager::GetInstance().GetActiveScene().GetSceneColliders();
 	Vector start = m_GameObject.GetTransform().GetPosition();
+	//Vector memoryVel{ m_Velocity };
 	for (ColliderComponent* col : colliders)
 	{
+		//Vector vel = m_Velocity;
 		if (col != m_Collider)
 		{
 			if (AreRectOverlapping(m_Collider->GetCoords(), col->GetCoords()))
@@ -65,8 +67,11 @@ void tait::PseudoPhysicsComponent::PostUpdate()
 				{
 					if (!col->IsTrigger())
 					{
-						Vector dir = OneVector(m_Velocity);
 						col->MoveBack(m_GameObject.GetTransform(), m_Velocity);
+						//if (vel.x != m_Velocity.x)
+						//	memoryVel.x = vel.x;
+						//if (vel.y != m_Velocity.y)
+						//	memoryVel.y = vel.y;
 					}
 					else
 					{
@@ -92,6 +97,7 @@ void tait::PseudoPhysicsComponent::PostUpdate()
 			}
 		}
 	}
+	//m_Velocity = memoryVel;
 }
 
 bool tait::PseudoPhysicsComponent::IsGrounded() const
@@ -104,8 +110,9 @@ bool tait::PseudoPhysicsComponent::IsGrounded() const
 		{
 			if (col != m_Collider)
 			{
-				Vector foot = m_GameObject.GetTransform().GetCenter() + Vector{ 0, m_GameObject.GetTransform().GetHalfSize().y + 2 };
-				if (IsPointInRect(col->GetCoords(), foot))
+				Vector foot1{ m_GameObject.GetTransform().GetPosition() + Vector{ 0, m_GameObject.GetTransform().GetSize().y + 2 } };
+				Vector foot2{ m_GameObject.GetTransform().GetPosition() + Vector{ 0, 2 } +m_GameObject.GetTransform().GetSize() };
+				if (IsPointInRect(col->GetCoords(), foot1) || IsPointInRect(col->GetCoords(), foot2))
 					return true;
 			}
 		}
