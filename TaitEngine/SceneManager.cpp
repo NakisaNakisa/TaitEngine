@@ -6,7 +6,8 @@ void tait::SceneManager::PreUpdate()
 {
 	for (auto& scene : m_Scenes)
 	{
-		scene->PreUpdate();
+		if (scene->IsActive())
+			scene->PreUpdate();
 	}
 }
 
@@ -14,7 +15,8 @@ void tait::SceneManager::Update()
 {
 	for(auto& scene : m_Scenes)
 	{
-		scene->Update();
+		if(scene->IsActive())
+			scene->Update();
 	}
 }
 
@@ -22,7 +24,8 @@ void tait::SceneManager::PostUpdate()
 {
 	for (auto& scene : m_Scenes)
 	{
-		scene->PostUpdate();
+		if (scene->IsActive())
+			scene->PostUpdate();
 	}
 }
 
@@ -30,7 +33,8 @@ void tait::SceneManager::Render()
 {
 	for (const auto& scene : m_Scenes)
 	{
-		scene->Render();
+		if (scene->IsActive())
+			scene->Render();
 	}
 }
 
@@ -53,13 +57,20 @@ void tait::SceneManager::SetActiveScene(const std::string& name)
 	}
 }
 
+tait::Scene* tait::SceneManager::GetScene(int id) const
+{
+	if (id < (int)m_Scenes.size())
+		return &*m_Scenes[id];
+	return nullptr;
+}
+
 void tait::SceneManager::SetActiveScene(int id, bool deactivateLastScene)
 {
 	if (deactivateLastScene)
 	{
 		if (m_ActiveScene)
-			m_ActiveScene->Activate(false);
+			m_ActiveScene->SetActiveState(false);
 	}
 	m_ActiveScene = m_Scenes[id];
-	m_ActiveScene->Activate(true);
+	m_ActiveScene->SetActiveState(true);
 }

@@ -39,6 +39,14 @@ namespace tait
 		void SetActiveStatus(bool isActive) { m_IsActive = isActive; }
 		bool IsActive() const { return m_IsActive; }
 
+		virtual void OnTriggerEnter(ColliderComponent* other);
+		virtual void OnTriggerExit(ColliderComponent* other);
+		virtual void OnTriggerStay(ColliderComponent* other);
+
+		int GetTag() const { return m_Tag; }
+		void SetTag(int tag) { m_Tag = tag; }
+		bool IsTag(int compare) { return m_Tag == compare; }
+
 		GameObject();
 		virtual ~GameObject();
 		GameObject(const GameObject& other) = delete;
@@ -53,6 +61,7 @@ namespace tait
 		void RemoveComponentHelper(size_t id);
 		bool m_IsActive{ true };
 		int m_LayerId{};
+		int m_Tag{};
 	};
 }
 

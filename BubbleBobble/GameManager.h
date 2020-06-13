@@ -13,7 +13,7 @@ namespace tait
 	class GameManager : public Component
 	{
 	public:
-		GameManager(GameObject* go, Player* player, CameraComponent* camera, RenderComponent* background,
+		GameManager(GameObject* go, std::shared_ptr<tait::GameObject>& playerGo, CameraComponent* camera, RenderComponent* background,
 			RenderComponent* cursor, RenderComponent* text1, RenderComponent* text2, RenderComponent* text3);
 		~GameManager();
 		//ro5
@@ -23,10 +23,15 @@ namespace tait
 		GameManager(const GameManager&) = delete;
 
 		void Update() override;
+		void LevelFinished();
 	private:
+		const int m_MaxLevels{ 3 };
 		Statemachine m_GameState;
 		LevelTransitionState* m_LevelTransition;
 		IngameState* m_Ingame;
 		MenuState* m_Menu;
+		std::shared_ptr<tait::GameObject>& m_PlayerGo;
+		int m_LevelId{ 1 };
+
 	};
 }

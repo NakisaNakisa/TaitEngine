@@ -19,9 +19,9 @@ Game::Game(int windowW, int windowH)
 	Initialize();
 	CreateMainMenu();
 	ParseLevels();
-	CreateGameManager();
 	CreatePlayer();
 	SceneManager::GetInstance().SetActiveScene((int)Levels::MainMenu);
+	CreateGameManager();
 	//m_Levels[0]->Remove(m_PlayerGo);
 	//m_Levels[2]->Add(m_PlayerGo);
 	//SceneManager::GetInstance().SetActiveScene((int)Levels::Level3);
@@ -49,11 +49,13 @@ void Game::CreateGameManager()
 {
 	auto go = std::make_shared<GameObject>();
 	GameObject* g = &*go;
-	m_GameManager = new GameManager(g, m_Player, &*m_Camera->GetComponent<CameraComponent>(), m_Background, m_Cursor, m_Text1, m_Text2, m_Text3);
+	m_GameManager = new GameManager(g, m_PlayerGo, &*m_Camera->GetComponent<CameraComponent>(), m_Background, m_Cursor, m_Text1, m_Text2, m_Text3);
 	go->AddComponent(m_GameManager);
 	m_MainMenu->Add(go);
 	for (size_t i = 0; i < m_Levels.size(); i++)
 		m_Levels[i]->Add(go);
+	SceneManager::GetInstance().GetActiveScene().Remove(m_PlayerGo);
+	m_PlayerGo->SetActiveStatus(false);
 }
 
 void Game::CreateMainMenu()
@@ -61,6 +63,7 @@ void Game::CreateMainMenu()
 	m_MainMenu = &SceneManager::GetInstance().CreateScene("MainMenu");
 
 	auto go = std::make_shared<GameObject>();
+	go->SetLayerId(1);
 	m_Background = go->AddComponent<RenderComponent>();
 	m_Background->SetTexture("Title.png");
 	m_MainMenu->Add(go);
@@ -153,7 +156,7 @@ void Game::ParseLevels()
 			m_Levels[levelid]->AddCollider(col);
 		}
 		m_Levels[levelid]->Add(go);
-		m_Levels[levelid]->Activate(false);
+		m_Levels[levelid]->SetActiveState(false);
 	}
 }
 
@@ -161,6 +164,7 @@ void Game::CreatePlayer()
 {
 	const int playerSize = 24;
 	m_PlayerGo = std::make_shared<GameObject>();
+	m_PlayerGo->SetLayerId(100);
 	auto col = m_PlayerGo->AddComponent<ColliderComponent>();
 	col->SetSize(Vector{ playerSize,playerSize });
 	col->SetStatic(false);

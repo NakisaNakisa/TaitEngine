@@ -5,6 +5,9 @@
 #include "Player.h"
 #include "RenderComponent.h"
 
+/// Contains game manager (FSM)
+/// Creates all levels, players and enemies
+
 class Game
 {
 	enum class Levels

@@ -27,6 +27,7 @@ namespace tait
 		void SetMaxVelocity(const Vector& vel) { m_MaxVelocity = vel; }
 		void SetGravity(float grav) { m_Gravity = grav; }
 		void SetFriction(float fric) { m_Friction = fric; }
+		void SetVelocity(const Vector& vel) { m_Velocity = vel; }
 
 		bool IsGrounded() const;
 		Vector& AcessAcceleration();

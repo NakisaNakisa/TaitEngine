@@ -16,7 +16,8 @@ namespace tait
 		void FindCamera();
 		void SetActiveCamera(CameraComponent* activeCam);
 		CameraComponent* GetCamera() const { return m_ActiveCamera; }
-		void Activate(bool isActive);
+		void SetActiveState(bool isActive);
+		bool IsActive() const { return m_IsActive; }
 
 		void AddCollider(ColliderComponent* collider);
 		void RemoveCollider(ColliderComponent* collider);
@@ -45,6 +46,7 @@ namespace tait
 		std::vector<ColliderComponent*> m_Colliders;
 
 		static unsigned int m_IdCounter; 
+		bool m_IsActive{};
 	};
 
 }

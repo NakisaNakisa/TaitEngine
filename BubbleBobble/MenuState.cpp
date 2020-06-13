@@ -4,13 +4,15 @@
 #include "RenderComponent.h"
 #include "Transform.h"
 #include "GameObject.h"
+#include "CameraComponent.h"
 
 tait::MenuState::MenuState
 (
-	Player* player, Statemachine* fsm, RenderComponent* background,
+	CameraComponent* camera, Player* player, Statemachine* fsm, RenderComponent* background,
 	RenderComponent* cursor, RenderComponent* text1, RenderComponent* text2, RenderComponent* text3
 )
-	: m_Player{ player }
+	: m_Camera{ camera }
+	, m_Player{ player }
 	, m_FSM{ fsm }
 	, m_Background{ background }
 	, m_Cursor{ cursor }
@@ -18,7 +20,7 @@ tait::MenuState::MenuState
 	, m_Text2{ text2 }
 	, m_Text3{ text3 }
 {
-	m_MoveSpeed = m_DistanceToMove / 5.f;
+	m_MoveSpeed = m_DistanceToMove / m_TransitionTimeInSeconds;
 }
 
 void tait::MenuState::Run()
@@ -32,6 +34,8 @@ void tait::MenuState::Run()
 
 void tait::MenuState::Enter()
 {
+	m_MovedDistance = 0;
+	m_Camera->GetGameObject().GetTransform().SetPosition(0, 0);
 	m_Text1->SetActiveStatus(false);
 	m_Text2->SetActiveStatus(false);
 	m_Text3->SetActiveStatus(false);
@@ -45,6 +49,7 @@ void tait::MenuState::Enter()
 	m_Background->SetActiveStatus(true);
 	m_Background->GetGameObject().GetTransform().SetPosition(Vector{ 0,0 });
 	m_Cursor->SetActiveStatus(false);
+	m_CurrentState = MenuStates::TitleCard;
 }
 
 void tait::MenuState::Exit()

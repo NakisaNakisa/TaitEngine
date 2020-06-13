@@ -26,7 +26,7 @@ void tait::LevelTransitionState::Run()
 	float d = dt * m_CameraSpeed;
 	m_MovedDistance += d;
 	m_Camera->GetGameObject().GetTransform().Translate(Vector{ 0, d });
-	m_Player->GetGameObject().GetTransform().Translate(m_PlayerMoveSpeed * dt);
+	m_Player->GetGameObject().GetTransform().Translate(m_PlayerMoveSpeed * dt + Vector{ 0,d });
 	if (m_MovedDistance >= m_DistanceToMove)
 	{
 		float dBack = m_MovedDistance - m_DistanceToMove;
@@ -41,7 +41,9 @@ void tait::LevelTransitionState::Enter()
 	m_Player->GetCharacterController()->GetPhysics()->SetActiveStatus(false);
 	m_Player->GetCharacterController()->SetActiveStatus(false);
 	m_Player->SetActiveStatus(false);
-	m_PlayerMoveSpeed = (m_PlayerTarget - m_Player->GetGameObject().GetTransform().GetPosition()) / 5.f;
+	m_PlayerMoveSpeed = (m_PlayerTarget + m_Camera->GetGameObject().GetTransform().GetPosition() - m_Player->GetGameObject().GetTransform().GetPosition()) / 5.f;
+	SceneManager::GetInstance().SetActiveScene(m_CurrentLevelId, false);
+	m_CurrentLevelId++;
 }
 
 void tait::LevelTransitionState::Exit()
@@ -49,5 +51,6 @@ void tait::LevelTransitionState::Exit()
 	m_Player->SetActiveStatus(true);
 	m_Player->GetCharacterController()->SetActiveStatus(true);
 	m_Player->GetCharacterController()->GetPhysics()->SetActiveStatus(true);
-	m_OldScene->Activate(false);
+	if(m_OldScene)
+		m_OldScene->SetActiveState(false);
 }

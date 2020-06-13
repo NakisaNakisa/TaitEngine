@@ -43,8 +43,9 @@ void tait::Scene::SetActiveCamera(CameraComponent* activeCam)
 	m_ActiveCamera = activeCam;
 }
 
-void tait::Scene::Activate(bool isActive)
+void tait::Scene::SetActiveState(bool isActive)
 {
+	m_IsActive = isActive;
 	for (auto& go : m_Objects)
 		go->SetActiveStatus(isActive);
 }

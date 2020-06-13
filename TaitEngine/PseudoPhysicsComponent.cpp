@@ -59,31 +59,31 @@ void tait::PseudoPhysicsComponent::PostUpdate()
 	for (ColliderComponent* col : colliders)
 	{
 		//Vector vel = m_Velocity;
-		if (col != m_Collider)
+		if (col != m_Collider && col->GetGameObject().GetTag() != m_Collider->GetGameObject().GetTag())
 		{
 			if (AreRectOverlapping(m_Collider->GetCoords(), col->GetCoords()))
 			{
-				if (!col->IgnoreCollision(m_Velocity))
+				if (!col->IsTrigger())
 				{
-					if (!col->IsTrigger())
+					if (!col->IgnoreCollision(m_Velocity))
 					{
 						col->MoveBack(m_GameObject.GetTransform(), m_Velocity);
-						//if (vel.x != m_Velocity.x)
-						//	memoryVel.x = vel.x;
-						//if (vel.y != m_Velocity.y)
-						//	memoryVel.y = vel.y;
+					}
+				}
+				else
+				{
+					if (m_Other == col)
+					{
+						EventSystem::TriggerEvent(*m_Other, Event::TRIGGER_INSIDE);
+						m_GameObject.OnTriggerStay(m_Other);
+						//std::cout << "Trigger inside" << std::endl;
 					}
 					else
 					{
-						if (m_Other == col)
-						{
-							EventSystem::TriggerEvent(*m_Other, Event::TRIGGER_INSIDE);
-						}
-						else
-						{
-							m_Other = col;
-							EventSystem::TriggerEvent(*m_Other, Event::TRIGGER_ENTERED);
-						}
+						m_Other = col;
+						m_GameObject.OnTriggerEnter(m_Other);
+						EventSystem::TriggerEvent(*m_Other, Event::TRIGGER_ENTERED);
+						//std::cout << "Trigger enter" << std::endl;
 					}
 				}
 			}
@@ -91,8 +91,10 @@ void tait::PseudoPhysicsComponent::PostUpdate()
 			{
 				if (m_Other == col)
 				{
+					m_GameObject.OnTriggerExit(m_Other);
 					m_Other = nullptr;
 					EventSystem::TriggerEvent(*m_Other, Event::TRIGGER_EXIT);
+					//std::cout << "Trigger exit" << std::endl;
 				}
 			}
 		}

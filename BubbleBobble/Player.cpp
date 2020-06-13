@@ -3,6 +3,7 @@
 #include "SpriteRenderComponent.h"
 #include "CharacterControllerComponent.h"
 #include "GameObject.h"
+#include "Projectile.h"
 
 using namespace tait;
 
@@ -10,12 +11,20 @@ Player::Player(GameObject& go)
 	: Component(go)
 	, m_CharacterController{ go.GetComponent<CharacterControllerComponent>() }
 	, m_Renderer{ go.GetComponent<SpriteRenderComponent>() }
-	, m_PlayerFlag{0}
+	, m_PlayerFlag{ 0 }
 	, m_AttackDuration{}
 	, m_DamagedDuration{}
+	, m_Bubbles{}
 {
 	m_AttackDuration.SetTimes(0.8f);
 	m_DamagedDuration.SetTimes(1.f, 0.2f);
+	m_Bubbles.resize(m_MaxBubbles);
+	m_GameObject.SetTag(m_PlayerTag);
+	
+	for (int i = 0; i < m_MaxBubbles; i++)
+	{
+		CreateBubble(i);
+	}
 }
 
 #define INPUTINST InputManager::GetInstance()
@@ -33,11 +42,11 @@ void tait::Player::Update()
 void tait::Player::Damage()
 {
 	if ((m_PlayerFlag & FLAG::IsDamaged))) != 0)
-		return;
+	return;
 	m_Lives--;
 	m_PlayerFlag |= 1 << (int)PlayerFlags::IsDamaged;
 	m_DamagedDuration.Activate();
-	if(m_Lives <= 0)
+	if (m_Lives <= 0)
 		m_PlayerFlag |= 1 << (int)PlayerFlags::IsDead;
 }
 
@@ -47,14 +56,50 @@ void tait::Player::SetLevelStartEnd(int top, int bottom)
 	m_LevelTop = top;
 }
 
+void tait::Player::OnTriggerEnter(ColliderComponent* other)
+{
+	if (other->GetGameObject().IsTag(m_BubbleTag))
+	{
+		Projectile* p{};
+		for (Projectile* proj : m_Bubbles)
+		{
+			if (&proj->GetGameObject() == &other->GetGameObject())
+			{
+				p = proj;
+				break;
+			}
+		}
+		if (p)
+			p->Pop();
+		m_CharacterController->GetPhysics()->SetVelocity(Vector{ 0,0 });
+		m_CharacterController->GetPhysics()->AcessAcceleration().y = m_BubbleJumpAcceleration;
+	}
+}
+
 void tait::Player::Fire()
 {
 	if ((m_PlayerFlag & FLAG::IsShooting))) != 0)
-		return;
+	return;
 	m_PlayerFlag |= 1 << (int)PlayerFlags::IsShooting;
 	m_Renderer->SetUpdateSprite(true);
 	m_Renderer->SetStartFrame(16);
 	m_AttackDuration.Activate();
+	for (Projectile* bubble : m_Bubbles)
+	{
+		if (!bubble->IsActive())
+		{
+			float shootForce{ m_ShootForce };
+			Vector pos{ m_GameObject.GetTransform().GetPosition() + Vector{m_GameObject.GetTransform().GetSize().x, 0} };
+			if ((m_PlayerFlag & FLAG::IsMovingLeft))) != 0)
+			{
+				shootForce *= -1;
+				pos.x -= m_GameObject.GetTransform().GetSize().x * 2;
+			}
+			bubble->Shoot(pos, Vector{ shootForce, 0 }, m_BubbleFriction, m_BubbleGravity, m_BubbleFloatDuration);
+			bubble->SetActiveStatus(true);
+			break;
+		}
+	}
 }
 
 void tait::Player::Ticks()
@@ -148,4 +193,22 @@ void tait::Player::GapCap()
 {
 	if (m_GameObject.GetTransform().GetPosition().y > m_LevelBottom)
 		m_GameObject.GetTransform().SetPosition(m_GameObject.GetTransform().GetPosition().x, m_LevelTop - m_GameObject.GetTransform().GetSize().y);
+}
+
+void tait::Player::CreateBubble(int i)
+{
+	auto bubbleGo = std::make_shared<GameObject>();
+	auto col = bubbleGo->AddComponent<ColliderComponent>();
+	Vector size = m_GameObject.GetTransform().GetSize();
+	col->SetSize(size);
+	col->SetIsTrigger(true);
+	bubbleGo->AddComponent<PseudoPhysicsComponent>();
+	auto sprite = bubbleGo->AddComponent<SpriteRenderComponent>();
+	sprite->SetSprite("Projectile.png", 8, 12, 0.1f, 8 * 12);
+	sprite->SetSize(size);
+	m_Bubbles[i] = new Projectile(bubbleGo);
+	m_Bubbles[i]->SetActiveStatus(false);
+	bubbleGo->AddComponent(m_Bubbles[i]);
+	bubbleGo->SetTag(m_BubbleTag);
+	bubbleGo->GetTransform().SetPosition(-50, -50);
 }

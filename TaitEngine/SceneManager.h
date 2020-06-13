@@ -11,6 +11,8 @@ namespace tait
 		void SetActiveScene(const std::string& name);
 		void SetActiveScene(int id, bool deactivateLastScene = true);
 		Scene& GetActiveScene() const { return *m_ActiveScene; }
+		Scene* GetScene(int id) const;
+		size_t GetNrOfScenes() const { return m_Scenes.size(); }
 
 		void PreUpdate();
 		void Update();

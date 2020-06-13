@@ -3,6 +3,33 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 
+void tait::GameObject::OnTriggerEnter(ColliderComponent* other)
+{
+	for (auto& component : m_Components)
+	{
+		if (component->IsActive())
+			component->OnTriggerEnter(other);
+	}
+}
+
+void tait::GameObject::OnTriggerExit(ColliderComponent* other)
+{
+	for (auto& component : m_Components)
+	{
+		if (component->IsActive())
+			component->OnTriggerExit(other);
+	}
+}
+
+void tait::GameObject::OnTriggerStay(ColliderComponent* other)
+{
+	for (auto& component : m_Components)
+	{
+		if (component->IsActive())
+			component->OnTriggerStay(other);
+	}
+}
+
 tait::GameObject::GameObject()
 {
 	m_Transform.SetPosition(m_Transform.GetPosition());

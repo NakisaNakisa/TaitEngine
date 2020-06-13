@@ -3,6 +3,7 @@
 namespace tait
 {
 	class GameObject;
+	class ColliderComponent;
 	class Component
 	{
 	public:
@@ -11,6 +12,10 @@ namespace tait
 		virtual void PostUpdate() {};
 		virtual void Render() const {};
 		virtual ~Component() = default;
+
+		virtual void OnTriggerEnter(ColliderComponent*) {};
+		virtual void OnTriggerExit(ColliderComponent*) {};
+		virtual void OnTriggerStay(ColliderComponent*) {};
 
 		void SetActiveStatus(bool isActive) { m_IsActive = isActive; }
 		bool GetActiveStatus() const { return m_IsActive; }

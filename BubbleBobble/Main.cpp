@@ -8,11 +8,13 @@
 #include "Game.h"
 
 int main(int, char* []) {
+	const int ww{ 512 };
+	const int wh{ 424 };
 	tait::TaitEngine engine;
 	engine.SetFullScreen(false);
-	engine.SetWindowSize(512, 424);
+	engine.SetWindowSize(ww, wh);
 	engine.Initialize();
-	Game game{ 512 , 424 };
+	Game game{ ww , wh };
 	engine.Run();
 	game.CleanUp();
 	return 0;
