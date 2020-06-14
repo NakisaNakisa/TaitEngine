@@ -161,8 +161,8 @@ tait::Vector tait::InputManager::ControllerStickValues(int playerId, bool isLeft
 		return Vector{};
 
 	//determine the direction the controller is pushed
-	float normalizedLX = x / magnitude;
-	float normalizedLY = y / magnitude;
+	float normalizedX = x / magnitude;
+	float normalizedY = y / magnitude;
 
 	float normalizedMagnitude = 0;
 
@@ -185,5 +185,5 @@ tait::Vector tait::InputManager::ControllerStickValues(int playerId, bool isLeft
 		normalizedMagnitude = 0.0;
 		return Vector{};
 	}
-	return Vector{ normalizedLX, normalizedLY };
+	return Vector{ normalizedX, normalizedY };
 }

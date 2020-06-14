@@ -44,6 +44,7 @@ namespace tait
 		const int m_BubbleTag{ 1 };
 		const int m_PlayerTag{ 2 };
 		const int m_EnemyTag{ 3 };
+		const int m_EnemyProjectileTag{ 4 };
 		const float m_BubbleJumpAcceleration{ -70 };
 
 		std::vector<Projectile*> m_Bubbles;

@@ -82,12 +82,21 @@ void tait::Player::OnTriggerEnter(ColliderComponent* other)
 			if (e->IsInBubble())
 			{
 				e->Pop();
+				m_CharacterController->GetPhysics()->SetVelocity(Vector{ 0,0 });
+				m_CharacterController->GetPhysics()->AcessAcceleration().y = m_BubbleJumpAcceleration;
 			}
 			else
 			{
 				Damage();
 			}
 		}
+	}
+	if (other->GetGameObject().IsTag(m_EnemyProjectileTag))
+	{
+		Projectile* p{ other->GetGameObject().GetComponent<Projectile>() };
+		if (p)
+			p->Disappear();
+		Damage();
 	}
 }
 

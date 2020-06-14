@@ -11,7 +11,6 @@ tait::Projectile::Projectile(std::shared_ptr<GameObject>& go)
 	, m_Renderer{ go->GetComponent<SpriteRenderComponent>() }
 {
 	m_Collider->SetStatic(false);
-	m_PopDuration.SetTimes(0.5f);
 	size_t max = SceneManager::GetInstance().GetNrOfScenes();
 	for (size_t i = 1; i < max; i++)
 		SceneManager::GetInstance().GetScene((int)i)->Add(go);
@@ -48,13 +47,21 @@ void tait::Projectile::SwitchMode()
 	m_Physics->AcessAcceleration().y = m_Gravity;
 	m_Physics->SetGravity(m_Gravity);
 	m_FloatDuration.Activate();
-	m_Renderer->SetStartFrame(8 * m_PlayerId);
+	if (!m_FloatDuration.IsActive())
+		Pop();
+	if(m_IsBubble)
+		m_Renderer->SetStartFrame(8 * m_PlayerId);
 }
 
-void tait::Projectile::Shoot(const Vector& startPosition, const Vector& startAcceleration, float friction, float gravity, float floatDuration)
+void tait::Projectile::Shoot(const Vector& startPosition, const Vector& startAcceleration, float friction, float gravity, float floatDuration, float popDuration)
 {
-	m_Renderer->SetStartFrame(5 + 8 * m_PlayerId);
+	m_PopDuration.SetTimes(popDuration);
+	if (m_IsBubble)
+		m_Renderer->SetStartFrame(5 + 8 * m_PlayerId);
+	else
+		m_Renderer->SetStartFrame(80);
 	m_Renderer->SetAmount(1);
+	m_IsActive = true;
 	m_HasSwitched = false;
 	SceneManager::GetInstance().GetActiveScene().AddCollider(m_Collider);
 	m_GameObject.SetActiveStatus(true);
@@ -76,6 +83,8 @@ void tait::Projectile::Pop()
 	m_Renderer->SetStartFrame(32);
 	m_Physics->SetVelocity(Vector{ 0,0 });
 	m_PopDuration.Activate();
+	if (!m_PopDuration.IsActive())
+		Disappear();
 }
 
 void tait::Projectile::Disappear()

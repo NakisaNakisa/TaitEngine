@@ -190,6 +190,8 @@ void Game::ParseLevels()
 			ren->SetUpdateSprite(true);
 			go->SetTag(3);
 			Enemy* e = new Enemy(*go, (int)v[0]);
+			e->GivePlayer(m_Player, m_Player2);
+			e->SetTopBottom(levelid * 424.f, (levelid + 1) * 424.f);
 			m_Enemies.push_back(e);
 			m_EnemyPos.push_back(Vector{ v[1],v[2] });
 			go->SetActiveStatus(false);
@@ -244,4 +246,8 @@ void Game::CreatePlayer2()
 	m_Player2->SetLevelStartEnd(0, m_WindowH);
 	m_Player2Go->AddComponent(m_Player2);
 	m_Player2Go->SetActiveStatus(false);
+	for (size_t i = 0; i < m_Enemies.size(); i++)
+	{
+		m_Enemies[i]->GivePlayer(m_Player, m_Player2);
+	}
 }
