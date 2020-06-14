@@ -25,10 +25,12 @@ private:
 	const int m_WindowH, m_WindowW;
 	std::shared_ptr<tait::GameObject> m_Camera{};
 	std::shared_ptr<tait::GameObject> m_PlayerGo{};
+	std::shared_ptr<tait::GameObject> m_Player2Go{};
 	tait::Scene* m_MainMenu;
 	std::vector<tait::Scene*> m_Levels;
 	tait::GameManager* m_GameManager{};
 	tait::Player* m_Player{};
+	tait::Player* m_Player2{};
 	tait::RenderComponent* m_Background{};
 	tait::RenderComponent* m_Text1{};
 	tait::RenderComponent* m_Text2{};
@@ -39,5 +41,6 @@ private:
 	void CreateGameManager();
 	void CreateMainMenu();
 	void ParseLevels();
-	void CreatePlayer();
+	void CreatePlayer1();
+	void CreatePlayer2();
 };

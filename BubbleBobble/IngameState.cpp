@@ -8,8 +8,9 @@
 #include "Scene.h"
 
 
-tait::IngameState::IngameState(std::shared_ptr<tait::GameObject>& playerGo, Statemachine* fsm, GameManager& gm)
+tait::IngameState::IngameState(std::shared_ptr<tait::GameObject>& playerGo, std::shared_ptr<tait::GameObject>& player2Go, Statemachine* fsm, GameManager& gm)
 	: m_Player{ playerGo }
+	, m_Player2{ player2Go }
 	, m_FSM{ fsm }
 	, m_GM{ gm }
 {
@@ -33,6 +34,12 @@ void tait::IngameState::Enter()
 	m_Player->SetActiveStatus(true);
 	m_Player->GetComponent<Player>()->SetActiveStatus(true);
 	m_Player->GetComponent<Player>()->SetLevelStartEnd((m_LevelId - 1) * windowH, m_LevelId * windowH);
+	if (m_TwoPlayers)
+	{
+		m_Player2->SetActiveStatus(true);
+		m_Player2->GetComponent<Player>()->SetActiveStatus(true);
+		m_Player2->GetComponent<Player>()->SetLevelStartEnd((m_LevelId - 1) * windowH, m_LevelId * windowH);
+	}
 }
 
 void tait::IngameState::Exit()

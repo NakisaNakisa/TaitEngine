@@ -1,11 +1,13 @@
 #pragma once
 #include "StateMachine.h"
+#include "DurationTool.h"
 
 namespace tait
 {
 	class Player;
 	class RenderComponent;
 	class CameraComponent;
+	class GameManager;
 	class MenuState : public State
 	{
 		enum class MenuStates
@@ -16,7 +18,7 @@ namespace tait
 			PvP
 		};
 	public:
-		MenuState(CameraComponent* camera, Player* player, Statemachine* fsm, RenderComponent* background, RenderComponent* cursor, RenderComponent* text1, RenderComponent* text2, RenderComponent* text3);
+		MenuState(CameraComponent* camera, Statemachine* fsm, RenderComponent* background, RenderComponent* cursor, RenderComponent* text1, RenderComponent* text2, RenderComponent* text3, GameManager* gm);
 
 		virtual void Run() override;
 		virtual void Enter() override;
@@ -26,7 +28,6 @@ namespace tait
 		const Vector m_StartPos{ 512 / 3.f - 512 / 10.f, 424 / 5.f };
 		const float m_DistanceToMove{ 424 };
 		const float m_TransitionTimeInSeconds{ 3.f };
-		Player* m_Player;
 		Statemachine* m_FSM;
 		RenderComponent* m_Background;
 		RenderComponent* m_Cursor;
@@ -34,7 +35,9 @@ namespace tait
 		RenderComponent* m_Text2;
 		RenderComponent* m_Text3;
 		CameraComponent* m_Camera;
+		GameManager* m_GM;
 		MenuStates m_CurrentState{ MenuStates::TitleCard };
+		DurationTool m_InputCooldown{};
 		float m_OffSet{ m_StartPos.y };
 		float m_MovedDistance{};
 		float m_MoveSpeed{};
@@ -43,5 +46,7 @@ namespace tait
 		void MoveBackground();
 		void TitleCardinput();
 		void MenuInput();
+		void MoveUp();
+		void MoveDown();
 	};
 }

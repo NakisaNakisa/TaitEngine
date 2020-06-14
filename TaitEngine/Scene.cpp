@@ -73,9 +73,13 @@ void tait::Scene::PreUpdate()
 
 void Scene::Update()
 {
-	for(auto& object : m_Objects)
+	for (auto& object : m_Objects)
+	{
+		if (object == NULL)
+			break;
 		if (object->IsActive())
 			object->Update();
+	}
 }
 
 void tait::Scene::PostUpdate()

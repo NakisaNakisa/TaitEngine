@@ -5,22 +5,25 @@
 #include "Transform.h"
 #include "GameObject.h"
 #include "CameraComponent.h"
+#include "GameManager.h"
 
 tait::MenuState::MenuState
 (
-	CameraComponent* camera, Player* player, Statemachine* fsm, RenderComponent* background,
-	RenderComponent* cursor, RenderComponent* text1, RenderComponent* text2, RenderComponent* text3
+	CameraComponent* camera, Statemachine* fsm, RenderComponent* background,
+	RenderComponent* cursor, RenderComponent* text1, RenderComponent* text2, RenderComponent* text3,
+	GameManager* gm
 )
 	: m_Camera{ camera }
-	, m_Player{ player }
 	, m_FSM{ fsm }
 	, m_Background{ background }
 	, m_Cursor{ cursor }
 	, m_Text1{ text1 }
 	, m_Text2{ text2 }
 	, m_Text3{ text3 }
+	, m_GM{ gm }
 {
 	m_MoveSpeed = m_DistanceToMove / m_TransitionTimeInSeconds;
+	m_InputCooldown.SetTimes(0.2f);
 }
 
 void tait::MenuState::Run()
@@ -76,7 +79,7 @@ void tait::MenuState::MoveBackground()
 void tait::MenuState::TitleCardinput()
 {
 	if (InputManager::GetInstance().IsKeyDown(SDLK_SPACE)
-		|| InputManager::GetInstance().IsControllerButtonPressed(ControllerButton::Start, 0))
+		|| InputManager::GetInstance().IsControllerButtonPressed(ControllerButton::ButtonA, 0))
 	{
 		m_CurrentState = MenuStates::SinglePlayer;
 		m_Cursor->SetActiveStatus(true);
@@ -91,30 +94,43 @@ void tait::MenuState::MenuInput()
 {
 	if (!m_MoveBackground)
 	{
-		if (InputManager::GetInstance().IsKeyDown(SDLK_UP)
-			|| InputManager::GetInstance().IsControllerButtonPressed(ControllerButton::DPadUp, 0))
+		if (InputManager::GetInstance().IsKeyDown(SDLK_UP) || InputManager::GetInstance().IsKeyDown(SDLK_w))
 		{
-			int c = (int)m_CurrentState - 1;
-			if (c == 0)
-				c = 2;
-			else
-				c--;
-			c += 1;
-			m_CurrentState = (MenuStates)c;
-			m_Cursor->SetPosition(m_StartPos + Vector{ 0, m_OffSet * (c - 1) });
+			MoveUp();
 		}
-		else if (InputManager::GetInstance().IsKeyDown(SDLK_DOWN)
-			|| InputManager::GetInstance().IsControllerButtonPressed(ControllerButton::DPadDown, 0))
+		else if (InputManager::GetInstance().IsKeyDown(SDLK_DOWN) || InputManager::GetInstance().IsKeyDown(SDLK_s))
 		{
-			int c = (int)m_CurrentState - 1;
-			++c %= 3;
-			c += 1;
-			m_CurrentState = (MenuStates)c;
-			m_Cursor->SetPosition(m_StartPos + Vector{ 0, m_OffSet * (c - 1) });
+			MoveDown();
 		}
-		if (InputManager::GetInstance().IsKeyDown(SDLK_RETURN)
-			|| InputManager::GetInstance().IsKeyDown(SDLK_SPACE)
-			|| InputManager::GetInstance().IsControllerButtonPressed(ControllerButton::Start, 0)
+		if (!m_InputCooldown.IsActive())
+		{
+			if (InputManager::GetInstance().IsControllerButtonPressed(ControllerButton::DPadDown, 0))
+			{
+				MoveDown();
+				m_InputCooldown.Activate();
+			}
+			else if (InputManager::GetInstance().IsControllerButtonPressed(ControllerButton::DPadUp, 0))
+			{	
+				MoveUp();
+				m_InputCooldown.Activate();
+			}
+			float y = InputManager::GetInstance().ControllerStickValues(0, true).y;
+			if (y > 0)
+			{
+				MoveUp();
+				m_InputCooldown.Activate();
+			}
+			else if (y < 0)
+			{
+				MoveDown();
+				m_InputCooldown.Activate();
+			}
+		}
+		else
+		{
+			m_InputCooldown.Tick();
+		}
+		if (InputManager::GetInstance().IsKeyDown(SDLK_SPACE)
 			|| InputManager::GetInstance().IsControllerButtonPressed(ControllerButton::ButtonA, 0))
 		{
 			//start correct game mode
@@ -125,6 +141,8 @@ void tait::MenuState::MenuInput()
 				m_FSM->Transition();
 				break;
 			case tait::MenuState::MenuStates::Coop:
+				m_GM->SetTwoPlayers();
+				m_FSM->Transition();
 				break;
 			case tait::MenuState::MenuStates::PvP:
 				break;
@@ -132,6 +150,26 @@ void tait::MenuState::MenuInput()
 				break;
 			}
 		}
-		//todo support stick
 	}
+}
+
+void tait::MenuState::MoveUp()
+{
+	int c = (int)m_CurrentState - 1;
+	if (c == 0)
+		c = 2;
+	else
+		c--;
+	c += 1;
+	m_CurrentState = (MenuStates)c;
+	m_Cursor->SetPosition(m_StartPos + Vector{ 0, m_OffSet * (c - 1) });
+}
+
+void tait::MenuState::MoveDown()
+{
+	int c = (int)m_CurrentState - 1;
+	++c %= 3;
+	c += 1;
+	m_CurrentState = (MenuStates)c;
+	m_Cursor->SetPosition(m_StartPos + Vector{ 0, m_OffSet * (c - 1) });
 }

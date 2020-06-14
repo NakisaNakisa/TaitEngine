@@ -60,15 +60,7 @@ void tait::Player::OnTriggerEnter(ColliderComponent* other)
 {
 	if (other->GetGameObject().IsTag(m_BubbleTag))
 	{
-		Projectile* p{};
-		for (Projectile* proj : m_Bubbles)
-		{
-			if (&proj->GetGameObject() == &other->GetGameObject())
-			{
-				p = proj;
-				break;
-			}
-		}
+		Projectile* p{ other->GetGameObject().GetComponent<Projectile>() };
 		if (p)
 			p->Pop();
 		m_CharacterController->GetPhysics()->SetVelocity(Vector{ 0,0 });
@@ -79,10 +71,10 @@ void tait::Player::OnTriggerEnter(ColliderComponent* other)
 void tait::Player::Fire()
 {
 	if ((m_PlayerFlag & FLAG::IsShooting))) != 0)
-	return;
+		return;
 	m_PlayerFlag |= 1 << (int)PlayerFlags::IsShooting;
 	m_Renderer->SetUpdateSprite(true);
-	m_Renderer->SetStartFrame(16);
+	m_Renderer->SetStartFrame(16 + 48 * m_CharacterController->GetPlayerId());
 	m_AttackDuration.Activate();
 	for (Projectile* bubble : m_Bubbles)
 	{
@@ -152,9 +144,12 @@ void tait::Player::Input()
 	else
 	{
 		//m_Renderer->SetUpdateSprite(false);
+		m_Renderer->SetUpdateSprite(true);
 		m_PlayerFlag &= ~(1 << (int)PlayerFlags::IsMoving);
 	}
 	if (INPUTINST.IsKeyDown(SDLK_e) || INPUTINST.IsKeyDown(SDLK_RETURN))
+		Fire();
+	if (INPUTINST.IsControllerButtonPressed(ControllerButton::ButtonB, m_CharacterController->GetPlayerId()))
 		Fire();
 }
 
@@ -163,27 +158,27 @@ void tait::Player::SetRendererState()
 	if ((m_PlayerFlag & FLAG::IsMoving))) != 0)
 	{
 		if ((m_PlayerFlag & FLAG::IsMovingLeft))) != 0)
-			m_Renderer->SetStartFrame(WalkLeft);
+			m_Renderer->SetStartFrame(WalkLeft + 48 * m_CharacterController->GetPlayerId());
 		else
-			m_Renderer->SetStartFrame(WalkRight);
+			m_Renderer->SetStartFrame(WalkRight + 48 * m_CharacterController->GetPlayerId());
 		m_Renderer->SetAmount(WalkLeft);
 		m_Renderer->SetFrameDuration(m_WalkFrameDuration);
 	}
 	if ((m_PlayerFlag & FLAG::IsShooting))) != 0)
 	{
 		if ((m_PlayerFlag & FLAG::IsMovingLeft))) != 0)
-			m_Renderer->SetStartFrame(ShootLeft);
+			m_Renderer->SetStartFrame(ShootLeft + 48 * m_CharacterController->GetPlayerId());
 		else
-			m_Renderer->SetStartFrame(ShootRight);
+			m_Renderer->SetStartFrame(ShootRight + 48 * m_CharacterController->GetPlayerId());
 		m_Renderer->SetAmount(ShootRight);
 		m_Renderer->SetFrameDuration(m_ShootFrameDuration);
 	}
 	else
 	{
 		if ((m_PlayerFlag & FLAG::IsMovingLeft))) != 0)
-			m_Renderer->SetStartFrame(WalkLeft);
+			m_Renderer->SetStartFrame(WalkLeft + 48 * m_CharacterController->GetPlayerId());
 		else
-			m_Renderer->SetStartFrame(WalkRight);
+			m_Renderer->SetStartFrame(WalkRight + 48 * m_CharacterController->GetPlayerId());
 		m_Renderer->SetAmount(WalkLeft);
 		m_Renderer->SetFrameDuration(m_WalkFrameDuration);
 	}

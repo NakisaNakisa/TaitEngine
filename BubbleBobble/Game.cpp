@@ -19,15 +19,10 @@ Game::Game(int windowW, int windowH)
 	Initialize();
 	CreateMainMenu();
 	ParseLevels();
-	CreatePlayer();
+	CreatePlayer1();
+	CreatePlayer2();
 	SceneManager::GetInstance().SetActiveScene((int)Levels::MainMenu);
 	CreateGameManager();
-	//m_Levels[0]->Remove(m_PlayerGo);
-	//m_Levels[2]->Add(m_PlayerGo);
-	//SceneManager::GetInstance().SetActiveScene((int)Levels::Level3);
-	//m_Player->SetLevelStartEnd(windowH * 2, windowH * 3);
-	//m_Player->GetGameObject().GetTransform().Translate(Vector{ 0, (float)windowH * 2 });
-	//m_Camera->GetTransform().Translate(Vector{ 0,(float)windowH * 2 });
 }
 
 void Game::CleanUp()
@@ -49,13 +44,15 @@ void Game::CreateGameManager()
 {
 	auto go = std::make_shared<GameObject>();
 	GameObject* g = &*go;
-	m_GameManager = new GameManager(g, m_PlayerGo, &*m_Camera->GetComponent<CameraComponent>(), m_Background, m_Cursor, m_Text1, m_Text2, m_Text3);
+	m_GameManager = new GameManager(g, m_PlayerGo, m_Player2Go, &*m_Camera->GetComponent<CameraComponent>(), m_Background, m_Cursor, m_Text1, m_Text2, m_Text3);
 	go->AddComponent(m_GameManager);
 	m_MainMenu->Add(go);
 	for (size_t i = 0; i < m_Levels.size(); i++)
 		m_Levels[i]->Add(go);
 	SceneManager::GetInstance().GetActiveScene().Remove(m_PlayerGo);
+	SceneManager::GetInstance().GetActiveScene().Remove(m_Player2Go);
 	m_PlayerGo->SetActiveStatus(false);
+	m_Player2Go->SetActiveStatus(false);
 }
 
 void Game::CreateMainMenu()
@@ -160,7 +157,7 @@ void Game::ParseLevels()
 	}
 }
 
-void Game::CreatePlayer()
+void Game::CreatePlayer1()
 {
 	const int playerSize = 24;
 	m_PlayerGo = std::make_shared<GameObject>();
@@ -180,4 +177,26 @@ void Game::CreatePlayer()
 	m_Player->SetLevelStartEnd(0, m_WindowH);
 	m_PlayerGo->AddComponent(m_Player);
 	m_PlayerGo->SetActiveStatus(false);
+}
+
+void Game::CreatePlayer2()
+{
+	const int playerSize = 24;
+	m_Player2Go = std::make_shared<GameObject>();
+	m_Player2Go->SetLayerId(100);
+	auto col = m_Player2Go->AddComponent<ColliderComponent>();
+	col->SetSize(Vector{ playerSize,playerSize });
+	col->SetStatic(false);
+	m_Player2Go->AddComponent<PseudoPhysicsComponent>();
+	auto sprite = m_Player2Go->AddComponent<SpriteRenderComponent>();
+	sprite->SetSprite("Character.png", 8, 12, 0.2f, 8);
+	sprite->SetAmount(8);
+	sprite->SetStartFrame(48);
+	sprite->SetSize(Vector{ playerSize, playerSize });
+	auto chContr = m_Player2Go->AddComponent<CharacterControllerComponent>();
+	chContr->GetGameObject().SetPosition(444, 360);
+	m_Player2 = new Player(*m_Player2Go);
+	m_Player2->SetLevelStartEnd(0, m_WindowH);
+	m_Player2Go->AddComponent(m_Player2);
+	m_Player2Go->SetActiveStatus(false);
 }
