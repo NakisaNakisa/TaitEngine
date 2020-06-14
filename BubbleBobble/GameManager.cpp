@@ -65,6 +65,11 @@ void tait::GameManager::LevelFinished()
 	m_GameState.Transition(m_LevelTransition);
 }
 
+void tait::GameManager::SetEnemies(std::vector<Enemy*> enemies, std::vector<Vector> enemyPos, std::vector<int> levelEnemyAmount)
+{
+	m_Ingame->SetEnemies(enemies, enemyPos, levelEnemyAmount);
+}
+
 void tait::GameManager::SetTwoPlayers()
 {
 	m_Ingame->SetTwoPlayers(true);

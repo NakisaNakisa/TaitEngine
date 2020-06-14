@@ -2,6 +2,7 @@
 #include "StateMachine.h"
 #include "GameObject.h"
 #include "GameManager.h"
+#include "DurationTool.h"
 
 namespace tait
 {
@@ -17,7 +18,7 @@ namespace tait
 		virtual void Exit() override;
 		void SetTwoPlayers(bool twoPlayers) { m_TwoPlayers = twoPlayers; }
 
-		void SetEnemyInLevelAmount(int enemiesInLevel);
+		void SetEnemies(std::vector<Enemy*> enemies, std::vector<Vector> enemyPos, std::vector<int> levelEnemyAmount);
 		void EnemyDied();
 	private:
 		const int m_MaxLevelId{ 4 };
@@ -25,6 +26,12 @@ namespace tait
 		std::shared_ptr<tait::GameObject>& m_Player2;
 		Statemachine* m_FSM;
 		GameManager& m_GM;
+		std::vector<Enemy*> m_Enemies;
+		std::vector<Vector> m_EnemieSpawnPos;
+		std::vector<int> m_EnemiesPerLevel;
+		int m_SpawnedEnemies{};
+		int m_EnemyVectorId{};
+		int m_EnemySpawnId{ -1 };
 		int m_LevelId{ -1 };
 		int m_EnemiesInLevel{};
 		int m_DeadEnemies{};

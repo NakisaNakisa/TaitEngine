@@ -45,8 +45,8 @@ void tait::Projectile::SwitchMode()
 {
 	m_HasSwitched = true;
 	m_Physics->SetVelocity(Vector{ 0.1f,0.1f });
-	m_Physics->AcessAcceleration().y = -m_Gravity;
-	m_Physics->SetGravity(-m_Gravity);
+	m_Physics->AcessAcceleration().y = m_Gravity;
+	m_Physics->SetGravity(m_Gravity);
 	m_FloatDuration.Activate();
 	m_Renderer->SetStartFrame(8 * m_PlayerId);
 }

@@ -45,6 +45,7 @@ void Game::CreateGameManager()
 	auto go = std::make_shared<GameObject>();
 	GameObject* g = &*go;
 	m_GameManager = new GameManager(g, m_PlayerGo, m_Player2Go, &*m_Camera->GetComponent<CameraComponent>(), m_Background, m_Cursor, m_Text1, m_Text2, m_Text3);
+	m_GameManager->SetEnemies(m_Enemies, m_EnemyPos, m_LevelEnemyAmount);
 	go->AddComponent(m_GameManager);
 	m_MainMenu->Add(go);
 	for (size_t i = 0; i < m_Levels.size(); i++)
@@ -153,6 +154,45 @@ void Game::ParseLevels()
 			m_Levels[levelid]->AddCollider(col);
 		}
 		m_Levels[levelid]->Add(go);
+		int c{};
+		while (true)
+		{
+			std::getline(levelFile, line);
+			if (line == "f")
+				break;
+			go = std::make_shared<GameObject>();
+			float v[4]{};
+			std::stringstream ss{ line };
+			std::string val{};
+			for (size_t i = 0; i < 3; i++)
+			{
+				std::getline(ss, val, ',');
+				v[i] = std::stof(val);
+			}
+			auto col = go->AddComponent<ColliderComponent>();
+			col->SetSize(Vector{ 24,24 });
+			col->SetStatic(false);
+			col = go->AddComponent<ColliderComponent>();
+			col->SetSize(Vector{ 24,24 });
+			col->SetStatic(false);
+			col->SetIsTrigger(true);
+			go->SetLayerId(100);
+			go->AddComponent<PseudoPhysicsComponent>();
+			auto ren = go->AddComponent<SpriteRenderComponent>();
+			ren->SetSprite("Enemies.png", 8, 8, 0.2f, 8 * 8);
+			ren->SetAmount(8);
+			ren->SetSize(Vector{ 24,24 });
+			ren->SetUpdateSprite(true);
+			go->SetTag(3);
+			Enemy* e = new Enemy(*go, (int)v[0]);
+			m_Enemies.push_back(e);
+			m_EnemyPos.push_back(Vector{ v[1],v[2] });
+			go->SetActiveStatus(false);
+			go->AddComponent(e);
+			m_Levels[levelid]->Add(go);
+			c++;
+		}
+		m_LevelEnemyAmount.push_back(c);
 		m_Levels[levelid]->SetActiveState(false);
 	}
 }

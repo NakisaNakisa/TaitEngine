@@ -31,6 +31,17 @@ void tait::IngameState::Enter()
 	const int windowH{ 424 };
 	++m_LevelId %= m_MaxLevelId;
 	SceneManager::GetInstance().SetActiveScene(m_LevelId, false);
+	if (m_LevelId > 0)
+	{
+		m_SpawnedEnemies = 0;	
+		for (int i = 0; i < m_EnemiesPerLevel[m_EnemyVectorId]; i++)
+		{
+			m_EnemySpawnId++;
+			m_Enemies[m_EnemySpawnId]->GetGameObject().GetTransform().SetPosition(m_EnemieSpawnPos[m_EnemySpawnId] + Vector{ 0,424.f * m_EnemyVectorId });
+			m_Enemies[m_EnemySpawnId]->GetGameObject().SetActiveStatus(true);
+		}
+		m_EnemyVectorId++;
+	}
 	m_Player->SetActiveStatus(true);
 	m_Player->GetComponent<Player>()->SetActiveStatus(true);
 	m_Player->GetComponent<Player>()->SetLevelStartEnd((m_LevelId - 1) * windowH, m_LevelId * windowH);
@@ -46,10 +57,11 @@ void tait::IngameState::Exit()
 {
 }
 
-void tait::IngameState::SetEnemyInLevelAmount(int enemiesInLevel)
+void tait::IngameState::SetEnemies(std::vector<Enemy*> enemies, std::vector<Vector> enemyPos, std::vector<int> levelEnemyAmount)
 {
-	m_EnemiesInLevel = enemiesInLevel;
-	m_DeadEnemies = 0;
+	m_Enemies = enemies;
+	m_EnemieSpawnPos = enemyPos;
+	m_EnemiesPerLevel = levelEnemyAmount;
 }
 
 void tait::IngameState::EnemyDied()

@@ -4,6 +4,8 @@
 #include "GameManager.h"
 #include "Player.h"
 #include "RenderComponent.h"
+#include "Enemy.h"
+#include "Structs.h"
 
 /// Contains game manager (FSM)
 /// Creates all levels, players and enemies
@@ -36,6 +38,9 @@ private:
 	tait::RenderComponent* m_Text2{};
 	tait::RenderComponent* m_Text3{};
 	tait::RenderComponent* m_Cursor{};
+	std::vector<tait::Enemy*> m_Enemies{};
+	std::vector<tait::Vector> m_EnemyPos{};
+	std::vector<int> m_LevelEnemyAmount{};
 
 	void Initialize();
 	void CreateGameManager();

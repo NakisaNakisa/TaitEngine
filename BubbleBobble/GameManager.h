@@ -10,6 +10,7 @@ namespace tait
 	class IngameState;
 	class MenuState;
 	class RenderComponent;
+	class Enemy;
 	class GameManager : public Component
 	{
 	public:
@@ -24,6 +25,7 @@ namespace tait
 
 		void Update() override;
 		void LevelFinished();
+		void SetEnemies(std::vector<Enemy*> m_Enemies, std::vector<Vector> m_EnemyPos, std::vector<int> m_LevelEnemyAmount);
 		void SetTwoPlayers();
 	private:
 		const int m_MaxLevels{ 3 };

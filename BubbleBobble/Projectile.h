@@ -17,6 +17,7 @@ namespace tait
 		void Pop();
 		void Disappear();
 		void SetPlayerId(int id) { m_PlayerId = id; }
+		int GetPlayerid() const { return m_PlayerId; }
 	private:
 		PseudoPhysicsComponent* m_Physics;
 		ColliderComponent* m_Collider;

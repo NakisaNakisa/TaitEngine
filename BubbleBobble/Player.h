@@ -54,7 +54,7 @@ namespace tait
 		int m_LevelTop{}, m_LevelBottom{};
 		float m_ShootForce{ 150 };
 		float m_BubbleFriction{ 90 };
-		float m_BubbleGravity{ 10 };
+		float m_BubbleGravity{ -10 };
 		float m_BubbleFloatDuration{ 4 };
 
 		void Fire();
