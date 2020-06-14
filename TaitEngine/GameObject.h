@@ -1,6 +1,5 @@
 #pragma once
 #include "Transform.h"
-#include "SceneObject.h"
 #include "Component.h"
 #include "RenderComponent.h"
 #include "CameraComponent.h"

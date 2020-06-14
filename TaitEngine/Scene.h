@@ -42,7 +42,7 @@ namespace tait
 		CameraComponent* m_ActiveCamera{ nullptr };
 
 		std::string m_Name;
-		std::vector < std::shared_ptr<GameObject>> m_Objects{};
+		std::vector <std::shared_ptr<GameObject>> m_Objects{};
 		std::vector<ColliderComponent*> m_Colliders;
 
 		static unsigned int m_IdCounter; 

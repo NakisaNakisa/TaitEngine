@@ -31,8 +31,8 @@ namespace tait
 		const int m_TypeOffset{ 32 };
 		const float m_FloatTime{ 4.f };
 		const float m_FloatGravity{ -2.7f };
-		const float m_WalkSpeed{ 40 };
-		const float m_SprintSpeed{ 100 };
+		const float m_WalkSpeed{ 80 };
+		const float m_SprintSpeed{ 200 };
 		const float m_ShootForce{ 150 };
 		const float m_BolderFriction{ 90 };
 

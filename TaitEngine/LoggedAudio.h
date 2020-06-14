@@ -3,37 +3,38 @@
 #include <iostream>
 #include <string>
 
-class LoggedAudio : public Audio
+namespace tait
 {
-public:
-	LoggedAudio(Audio& wrapped)
-		: wrapped_(wrapped)
-	{}
-
-	void StartPlayingSound(std::wstring& soundID) override
+	class LoggedAudio : public Audio
 	{
-		log("play sound");
-		wrapped_.StartPlayingSound(soundID);
-	}
+	public:
+		LoggedAudio(Audio& wrapped)
+			: wrapped_(wrapped)
+		{}
 
-	void StopPlayingSound() override
-	{
-		log("stop sound");
-		wrapped_.StopSound();
-	}
+		void StartPlayingSound(std::string& source) override 
+		{
+			log("play sound");
+			wrapped_.StartPlayingSound(source);
+		}
+		virtual void StopPlayingSound(std::string& source) override
+		{
+			log("stop sound");
+			wrapped_.StopPlayingSound(source);
+		}
+		virtual void StopAllSound() override
+		{
+			log("stop all sounds");
+			wrapped_.StopAllSound();
+		}
 
-	void StopAllSound() override
-	{
-		log("stop all sounds");
-		wrapped_.StopAllSound();
-	}
+	private:
+		void log(const char* message)
+		{
+			// Code to log message...
+			std::cout << "Logging message, imagine it being saved: " << message << std::endl;
+		}
 
-private:
-	void log(const char* message)
-	{
-		// Code to log message...
-		std::cout << "Logging message, imagine it being saved: " << message << std::endl;
-	}
-
-	Audio& wrapped_;
-};
+		Audio& wrapped_;
+	};
+}

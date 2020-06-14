@@ -48,12 +48,6 @@
     <ClInclude Include="SceneManager.h">
       <Filter>Engine Files</Filter>
     </ClInclude>
-    <ClInclude Include="TextObject.h">
-      <Filter>Engine Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneObject.h">
-      <Filter>Engine Files</Filter>
-    </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>Engine Files</Filter>
     </ClInclude>
@@ -149,9 +143,6 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>Engine Files</Filter>
     </ClCompile>
-    <ClCompile Include="TextObject.cpp">
-      <Filter>Engine Files</Filter>
-    </ClCompile>
     <ClCompile Include="Texture2D.cpp">
       <Filter>Engine Files</Filter>
     </ClCompile>
@@ -185,9 +176,6 @@
     <ClCompile Include="EventSystem.cpp">
       <Filter>EventSystems</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionObserver.cpp">
-      <Filter>Component Files</Filter>
-    </ClCompile>
     <ClCompile Include="PseudoPhysicsComponent.cpp">
       <Filter>Component Files</Filter>
     </ClCompile>
@@ -200,14 +188,17 @@
     <ClCompile Include="StateMachine.cpp">
       <Filter>Engine Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameAudio.cpp">
-      <Filter>Component Files</Filter>
-    </ClCompile>
     <ClCompile Include="ThreadProviderh.cpp">
       <Filter>Engine Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameAudio.cpp">
+      <Filter>Engine Files</Filter>
+    </ClCompile>
     <ClCompile Include="DurationTool.cpp">
-      <Filter>Component Files</Filter>
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionObserver.cpp">
+      <Filter>EventSystems</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

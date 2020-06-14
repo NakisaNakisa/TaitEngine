@@ -7,7 +7,6 @@
 #include "Renderer.h"
 #include "ResourceManager.h"
 #include <SDL.h>
-#include "TextObject.h"
 #include "GameObject.h"
 #include "Scene.h"
 #include "Time.h"
@@ -52,50 +51,6 @@ void tait::TaitEngine::Initialize()
 	}
 
 	Renderer::GetInstance().Init(m_Window);
-}
-
-/**
- * Code constructing the scene world starts here
- */
-void tait::TaitEngine::LoadGame()
-{
-	if (!m_Demo)
-		return;
-	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
-	SceneManager::GetInstance().SetActiveScene("Demo");
-
-	auto go = std::make_shared<GameObject>();
-	go->SetLayerId((int)RenderLayers::Background_0);
-	RenderComponent* rc = go->AddComponent<RenderComponent>();
-	rc->SetTexture("background.jpg");
-	scene.Add(go);
-
-	go = std::make_shared<GameObject>();
-	rc = go->AddComponent<RenderComponent>();
-	rc->SetTexture("logo.png");
-	go->SetPosition(216, 180);
-	scene.Add(go);
-
-	go = std::make_shared<GameObject>();
-	SpriteRenderComponent* src = go->AddComponent<SpriteRenderComponent>();
-	src->SetSprite("GreenDragon.png", 8, 2, 0.15f, -1);
-	go->SetPosition(216, 250);
-	src->SetSize(Vector{ 30,40 });
-	src->SetAmount(8);
-	src->SetStartFrame(0);
-	scene.Add(go);
-
-	go = std::make_shared<GameObject>();
-	go->AddComponent<CameraComponent>();
-	scene.Add(go);
-	scene.FindCamera();
-
-
-	go = std::make_shared<GameObject>();
-	m_pFPSRC = go->AddComponent<RenderComponent>();
-	
-	go->SetPosition(10, 20);
-	scene.Add(go);
 }
 
 void tait::TaitEngine::Cleanup()

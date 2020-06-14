@@ -137,7 +137,7 @@ void tait::Player::Ticks()
 	if (m_DamagedDuration.IsActive())
 	{
 		if (m_DamagedDuration.Tick())
-			m_Renderer->SetActiveStatus(!m_Renderer->GetActiveStatus());
+			m_Renderer->SetActiveStatus(!m_Renderer->IsActive());
 		if (!m_DamagedDuration.IsActive())
 		{
 			m_PlayerFlag &= ~(1 << (int)PlayerFlags::IsDamaged);
