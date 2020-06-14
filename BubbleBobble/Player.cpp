@@ -202,6 +202,7 @@ void tait::Player::CreateBubble(int i)
 	sprite->SetSprite("Projectile.png", 8, 12, 0.1f, 8 * 12);
 	sprite->SetSize(size);
 	m_Bubbles[i] = new Projectile(bubbleGo);
+	m_Bubbles[i]->SetPlayerId(m_CharacterController->GetPlayerId());
 	m_Bubbles[i]->SetActiveStatus(false);
 	bubbleGo->AddComponent(m_Bubbles[i]);
 	bubbleGo->SetTag(m_BubbleTag);

@@ -48,12 +48,12 @@ void tait::Projectile::SwitchMode()
 	m_Physics->AcessAcceleration().y = -m_Gravity;
 	m_Physics->SetGravity(-m_Gravity);
 	m_FloatDuration.Activate();
-	m_Renderer->SetStartFrame(0);
+	m_Renderer->SetStartFrame(8 * m_PlayerId);
 }
 
 void tait::Projectile::Shoot(const Vector& startPosition, const Vector& startAcceleration, float friction, float gravity, float floatDuration)
 {
-	m_Renderer->SetStartFrame(5);
+	m_Renderer->SetStartFrame(5 + 8 * m_PlayerId);
 	m_Renderer->SetAmount(1);
 	m_HasSwitched = false;
 	SceneManager::GetInstance().GetActiveScene().AddCollider(m_Collider);
