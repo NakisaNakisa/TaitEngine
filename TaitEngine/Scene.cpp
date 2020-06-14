@@ -67,8 +67,12 @@ void tait::Scene::RemoveCollider(ColliderComponent* collider)
 void tait::Scene::PreUpdate()
 {
 	for (auto& object : m_Objects)
-		if(object->IsActive())
+	{
+		if (object == NULL)
+			break;
+		if (object->IsActive())
 			object->PreUpdate();
+	}
 }
 
 void Scene::Update()
@@ -85,14 +89,22 @@ void Scene::Update()
 void tait::Scene::PostUpdate()
 {
 	for (auto& object : m_Objects)
+	{
+		if (object == NULL)
+			break;	
 		if (object->IsActive())
 			object->PostUpdate();
+	}
 }
 
 void Scene::Render() const
 {
 	for (const auto& object : m_Objects)
+	{
+		if (object == NULL)
+			break;
 		if (object->IsActive())
 			object->Render();
+	}
 }
 

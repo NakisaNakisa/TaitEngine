@@ -9,7 +9,9 @@ namespace tait
 	{
 		TRIGGER_ENTERED,
 		TRIGGER_EXIT,
-		TRIGGER_INSIDE
+		TRIGGER_INSIDE,
+		PLAYER_DIED,
+		ENEMY_DIED
 	};
 
 	class EventSystem

@@ -18,7 +18,7 @@ tait::PseudoPhysicsComponent::PseudoPhysicsComponent(GameObject& go)
 {
 	if (!m_Collider)
 		m_Collider = m_GameObject.AddComponent<ColliderComponent>();
-	CollisionObserver::AddPhysicsComponent(this);
+	//CollisionObserver::AddPhysicsComponent(this);
 }
 
 void tait::PseudoPhysicsComponent::Update()
@@ -74,7 +74,7 @@ void tait::PseudoPhysicsComponent::PostUpdate()
 				{
 					if (m_Other == col)
 					{
-						EventSystem::TriggerEvent(*m_Other, Event::TRIGGER_INSIDE);
+						//EventSystem::TriggerEvent(*m_Other, Event::TRIGGER_INSIDE);
 						m_GameObject.OnTriggerStay(m_Other);
 						//std::cout << "Trigger inside" << std::endl;
 					}
@@ -82,7 +82,7 @@ void tait::PseudoPhysicsComponent::PostUpdate()
 					{
 						m_Other = col;
 						m_GameObject.OnTriggerEnter(m_Other);
-						EventSystem::TriggerEvent(*m_Other, Event::TRIGGER_ENTERED);
+						//EventSystem::TriggerEvent(*m_Other, Event::TRIGGER_ENTERED);
 						//std::cout << "Trigger enter" << std::endl;
 					}
 				}
@@ -93,7 +93,7 @@ void tait::PseudoPhysicsComponent::PostUpdate()
 				{
 					m_GameObject.OnTriggerExit(m_Other);
 					m_Other = nullptr;
-					EventSystem::TriggerEvent(*m_Other, Event::TRIGGER_EXIT);
+					//EventSystem::TriggerEvent(*m_Other, Event::TRIGGER_EXIT);
 					//std::cout << "Trigger exit" << std::endl;
 				}
 			}

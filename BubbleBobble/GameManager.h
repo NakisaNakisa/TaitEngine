@@ -27,6 +27,8 @@ namespace tait
 		void LevelFinished();
 		void SetEnemies(std::vector<Enemy*> m_Enemies, std::vector<Vector> m_EnemyPos, std::vector<int> m_LevelEnemyAmount);
 		void SetTwoPlayers();
+		IngameState* GetIngameState() const { return m_Ingame; }
+		void GameOver();
 	private:
 		const int m_MaxLevels{ 3 };
 		Statemachine m_GameState;

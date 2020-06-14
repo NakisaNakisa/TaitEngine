@@ -17,7 +17,9 @@ namespace tait
 		virtual void Enter() override;
 		virtual void Exit() override;
 		void SetTwoPlayers(bool twoPlayers) { m_TwoPlayers = twoPlayers; }
-
+		bool& IsTwoPlayers() { return m_TwoPlayers; }
+		void GameOver();
+		void LevelFinished();
 		void SetEnemies(std::vector<Enemy*> enemies, std::vector<Vector> enemyPos, std::vector<int> levelEnemyAmount);
 		void EnemyDied();
 	private:

@@ -144,6 +144,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="IngameObserver.cpp" />
     <ClCompile Include="IngameState.cpp" />
     <ClCompile Include="LevelTransitionState.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -157,10 +158,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BubbleTriggerObserver.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="IngameObserver.h" />
     <ClInclude Include="IngameState.h" />
     <ClInclude Include="LevelTransitionState.h" />
     <ClInclude Include="MenuState.h" />

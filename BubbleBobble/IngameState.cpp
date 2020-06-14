@@ -36,6 +36,8 @@ void tait::IngameState::Enter()
 		m_SpawnedEnemies = 0;	
 		for (int i = 0; i < m_EnemiesPerLevel[m_EnemyVectorId]; i++)
 		{
+			m_DeadEnemies = 0;
+			m_EnemiesInLevel = m_EnemiesPerLevel[m_EnemyVectorId];
 			m_EnemySpawnId++;
 			m_Enemies[m_EnemySpawnId]->GetGameObject().GetTransform().SetPosition(m_EnemieSpawnPos[m_EnemySpawnId] + Vector{ 0,424.f * m_EnemyVectorId });
 			m_Enemies[m_EnemySpawnId]->GetGameObject().SetActiveStatus(true);
@@ -57,6 +59,16 @@ void tait::IngameState::Exit()
 {
 }
 
+void tait::IngameState::GameOver()
+{
+	m_GM.GameOver();
+}
+
+void tait::IngameState::LevelFinished()
+{
+	m_GM.LevelFinished();
+}
+
 void tait::IngameState::SetEnemies(std::vector<Enemy*> enemies, std::vector<Vector> enemyPos, std::vector<int> levelEnemyAmount)
 {
 	m_Enemies = enemies;
@@ -67,8 +79,7 @@ void tait::IngameState::SetEnemies(std::vector<Enemy*> enemies, std::vector<Vect
 void tait::IngameState::EnemyDied()
 {
 	m_DeadEnemies++;
+	std::cout << "enemies in that level that died: " << m_DeadEnemies << std::endl;
 	if (m_DeadEnemies >= m_EnemiesInLevel)
-	{
-		m_FSM->Transition();
-	}
+		m_GM.LevelFinished();
 }

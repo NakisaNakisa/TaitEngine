@@ -28,6 +28,8 @@ Game::Game(int windowW, int windowH)
 void Game::CleanUp()
 {
 	Locator::Cleanup();
+	delete m_IGO;
+	m_IGO = nullptr;
 }
 
 void Game::Initialize()
@@ -54,6 +56,8 @@ void Game::CreateGameManager()
 	SceneManager::GetInstance().GetActiveScene().Remove(m_Player2Go);
 	m_PlayerGo->SetActiveStatus(false);
 	m_Player2Go->SetActiveStatus(false);
+	m_IGO = new IngameObserver(m_GameManager->GetIngameState());
+	EventSystem::AddObserver(m_IGO);
 }
 
 void Game::CreateMainMenu()
@@ -176,6 +180,7 @@ void Game::ParseLevels()
 			col->SetSize(Vector{ 24,24 });
 			col->SetStatic(false);
 			col->SetIsTrigger(true);
+			m_Levels[levelid]->AddCollider(col);
 			go->SetLayerId(100);
 			go->AddComponent<PseudoPhysicsComponent>();
 			auto ren = go->AddComponent<SpriteRenderComponent>();

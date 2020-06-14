@@ -42,6 +42,9 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>Game Files</Filter>
     </ClCompile>
+    <ClCompile Include="IngameObserver.cpp">
+      <Filter>GameState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
@@ -68,8 +71,8 @@
     <ClInclude Include="GameManager.h">
       <Filter>GameState</Filter>
     </ClInclude>
-    <ClInclude Include="BubbleTriggerObserver.h">
-      <Filter>Game Files</Filter>
+    <ClInclude Include="IngameObserver.h">
+      <Filter>GameState</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -4,6 +4,8 @@
 #include "CharacterControllerComponent.h"
 #include "GameObject.h"
 #include "Projectile.h"
+#include "Enemy.h"
+#include "EventSystem.h"
 
 using namespace tait;
 
@@ -17,7 +19,7 @@ Player::Player(GameObject& go)
 	, m_Bubbles{}
 {
 	m_AttackDuration.SetTimes(0.8f);
-	m_DamagedDuration.SetTimes(1.f, 0.2f);
+	m_DamagedDuration.SetTimes(1.f, 0.1f);
 	m_Bubbles.resize(m_MaxBubbles);
 	m_GameObject.SetTag(m_PlayerTag);
 	
@@ -42,12 +44,18 @@ void tait::Player::Update()
 void tait::Player::Damage()
 {
 	if ((m_PlayerFlag & FLAG::IsDamaged))) != 0)
-	return;
+		return;
+	if (m_Lives < 1)
+		return;
 	m_Lives--;
 	m_PlayerFlag |= 1 << (int)PlayerFlags::IsDamaged;
 	m_DamagedDuration.Activate();
 	if (m_Lives <= 0)
+	{
 		m_PlayerFlag |= 1 << (int)PlayerFlags::IsDead;
+		std::cout << "Player dead" << std::endl;
+		EventSystem::TriggerEvent(*this, Event::PLAYER_DIED);
+	}
 }
 
 void tait::Player::SetLevelStartEnd(int top, int bottom)
@@ -65,6 +73,21 @@ void tait::Player::OnTriggerEnter(ColliderComponent* other)
 			p->Pop();
 		m_CharacterController->GetPhysics()->SetVelocity(Vector{ 0,0 });
 		m_CharacterController->GetPhysics()->AcessAcceleration().y = m_BubbleJumpAcceleration;
+	}
+	if (other->GetGameObject().IsTag(m_EnemyTag))
+	{
+		Enemy* e{ other->GetGameObject().GetComponent<Enemy>() };
+		if (e)
+		{
+			if (e->IsInBubble())
+			{
+				e->Pop();
+			}
+			else
+			{
+				Damage();
+			}
+		}
 	}
 }
 

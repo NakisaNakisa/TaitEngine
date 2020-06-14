@@ -2,6 +2,9 @@
 #include "Enemy.h"
 #include "GameObject.h"
 #include "Projectile.h"
+#include "EventSystem.h"
+#include "SceneManager.h"
+#include "Scene.h"
 
 tait::Enemy::Enemy(GameObject& go, int type)
 	: Component(go)
@@ -62,6 +65,10 @@ void tait::Enemy::BubbleUp(bool byGreen)
 
 void tait::Enemy::Pop()
 {
+	std::cout << "pop" << std::endl;
+	m_GameObject.SetActiveStatus(false);
+	SceneManager::GetInstance().GetActiveScene().RemoveCollider(m_Collider);
+	EventSystem::TriggerEvent(*this, Event::ENEMY_DIED);
 }
 
 void tait::Enemy::Enemy1Update()

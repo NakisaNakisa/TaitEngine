@@ -44,13 +44,7 @@ void tait::GameManager::LevelFinished()
 {
 	if (m_LevelId >= m_MaxLevels)
 	{
-		SceneManager::GetInstance().GetScene(m_LevelId)->Remove(m_PlayerGo);
-		if(m_TwoPlayers)
-			SceneManager::GetInstance().GetScene(m_LevelId)->Remove(m_Player2Go);
-		SceneManager::GetInstance().GetScene(m_LevelId)->SetActiveState(false);
-		m_LevelId = 1;
-		SceneManager::GetInstance().GetScene(0)->SetActiveState(true);
-		m_GameState.Transition(m_Menu);
+		GameOver();
 		return;
 	}
 	SceneManager::GetInstance().GetScene(0)->SetActiveState(false);
@@ -75,7 +69,19 @@ void tait::GameManager::SetTwoPlayers()
 	m_Ingame->SetTwoPlayers(true);
 	m_LevelTransition->SetTwoPlayers(true);
 	m_TwoPlayers = true;
+	
 	if (m_TwoPlayers)
 		SceneManager::GetInstance().GetScene(m_LevelId)->Add(m_Player2Go);
+}
+
+void tait::GameManager::GameOver()
+{
+	SceneManager::GetInstance().GetScene(m_LevelId)->Remove(m_PlayerGo);
+	if (m_TwoPlayers)
+		SceneManager::GetInstance().GetScene(m_LevelId)->Remove(m_Player2Go);
+	SceneManager::GetInstance().GetScene(m_LevelId)->SetActiveState(false);
+	m_LevelId = 1;
+	SceneManager::GetInstance().GetScene(0)->SetActiveState(true);
+	m_GameState.Transition(m_Menu);
 }
 

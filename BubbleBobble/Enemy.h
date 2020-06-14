@@ -18,6 +18,7 @@ namespace tait
 		void Update() override;
 		void BubbleUp(bool byGreen);
 		void Pop();
+		bool IsInBubble() const { return m_IsInBubble; }
 	private:
 		const int m_MoveLeft{ 0 };
 		const int m_MoveRight{ 8 };
